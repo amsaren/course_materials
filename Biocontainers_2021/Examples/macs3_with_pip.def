@@ -1,0 +1,32 @@
+Bootstrap: docker
+From: ubuntu:20.04
+
+%post
+
+  # Install python
+  apt update
+  apt install python3 -y
+  apt install pip -y
+  ln -s /usr/bin/python3 /usr/bin/python
+
+  # Install MACS3  with pip
+  pip install MACS3
+
+%environment
+
+%runscript
+
+  exec "$@"
+
+%labels
+
+  Maintainer my.address@example.net
+  Version v1.0
+
+%help
+
+  This is a container for MACS3 software
+  https://github.com/macs3-project/MACS
+  MACS3 is distributed under BSD 3-Clause License
+  Usage:
+  singularity exec macs3.sif macs3 --help
