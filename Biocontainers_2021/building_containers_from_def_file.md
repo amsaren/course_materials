@@ -256,3 +256,10 @@ singularity build --remote macs3.sif macs3.def
 Alternatively you can upload or paste the definition file to the web interface at Sylabs,
 and then use `singularity pull` to download the image.
 
+Finally you can test your new image:
+```bash
+singularity exec macs3.sif macs3 --help
+```
+
+I have provided some [example definition files](https://github.com/amsaren/course_materials/tree/main/Biocontainers_2021/Examples),
+including the various versions of this tutorial.
