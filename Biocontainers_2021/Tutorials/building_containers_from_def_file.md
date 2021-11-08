@@ -53,7 +53,7 @@ for a full list and detailed descriptions.
 ### Selecting the base image
 
 You typically start by selecting a suitable base image. This will have the basic operating system,
-file system etc for your image. These can be selected from e.g Singularity conatiner library, Docker 
+file system etc for your image. These can be selected from e.g Singularity container library, Docker 
 Hub or Singularity Hub. The possible sources and options are discussed in more detail in the lecture.
 
 Selection of base image depends on the software. If, for example, the software developer provide 
