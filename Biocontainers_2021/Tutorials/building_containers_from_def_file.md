@@ -3,7 +3,7 @@ topic: singularity
 title: Tutorial - Creating singularity containers from definition files
 ---
 
-# Creating singularity containers from definition files
+# Creating Singularity containers from definition files
 
 In this tutorial we create a Singularity container from a definition file.
 

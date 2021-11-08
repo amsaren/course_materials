@@ -1,0 +1,22 @@
+Bootstrap: yum
+OSVersion: 7
+MirrorURL: http://mirror.centos.org/centos-%{OSVERSION}/%{OSVERSION}/os/$basearch/
+Include: yum
+
+%post
+    yum group install "Development Tools" -y
+    yum install wget -y
+    wget https://micans.org/mcl/src/mcl-latest.tar.gz
+    tar xf mcl-latest.tar.gz
+    cd mcl-14-137
+    ./configure
+    make
+    make install
+    cd ..
+    rm -rf mcl-*
+
+%environment
+    export LC_ALL=C
+
+%runscript
+    exec /bin/bash "$@"
