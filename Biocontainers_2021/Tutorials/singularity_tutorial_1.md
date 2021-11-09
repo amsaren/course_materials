@@ -14,7 +14,6 @@ sinteractive --account project_xxxx   # Change the xxxx for the project number
 
 ## Getting started
 
-{:start="2"}
 2. Download a test container image from allas.
     ```bash
     wget  https://a3s.fi/saren-2001659-pub/tutorial.sif
@@ -41,34 +40,6 @@ sinteractive --account project_xxxx   # Change the xxxx for the project number
 
 💭 The tutorial container is based on Ubuntu 18.04. The host and the container use the same kernel, but the rest of the system can vary. 
 - That means a container can be based on a different Linux distribution than the host (as long as they are kernel-compatible), but can't run a totally different OS like Windows or macOS.
-
-#### Singularity exec in batch jobs
-💡 `Singularity exec` is the run method you will typically use in a batch job script.
-
-1. Make a file called `test.sh`:
-    ```bash
-    module load nano   # The computing node does not have nano by default
-    nano test.sh
-    ```
-2. Copy the following contents into the file and change "project_xxxx" to the correct project name:
-    ```bash
-   #!/bin/bash
-   #SBATCH --job-name=test           # Name of the job visible in the queue.
-   #SBATCH --account=project_xxxx    # Choose the billing project. Has to be defined!
-   #SBATCH --partition=test          # Job queues: test, interactive, small, large, longrun, hugemem, hugemem_longrun
-   #SBATCH --time=00:01:00           # Maximum duration of the job. Max: depends of the partition. 
-   #SBATCH --mem=1G                  # How much RAM is reserved for job per node.
-   #SBATCH --ntasks=1                # Number of tasks. Max: depends on partition.
-   #SBATCH --cpus-per-task=1         # How many processors work on one task. Max: Number of CPUs per node.
-
-   singularity exec tutorial.sif hello_world
-    ```
-3. Submit the job to the queue with:
-    ```bash
-   sbatch test.sh
-    ```
-
-💡 For more information on batch jobs, please see [CSC Docs pages](https://docs.csc.fi/computing/running/getting-started/).
 
 ### Singularity run
 💬 When containers are created, a standard action, called the `runscript` is defined. Depending on the container, it may simply print out a message, or it may launch a program or service inside the container. 
