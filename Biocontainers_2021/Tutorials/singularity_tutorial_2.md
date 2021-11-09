@@ -24,7 +24,6 @@ title: Tutorial - Singularity introduction continued
     ```bash
     sinteractive --account project_xxxx   # Change the xxxx for the project number
     ```
-
 2. Try listing the contents of your project directory (substitute the correct path) from inside the container without `bind`:
     ```bash
     export SCRATCH=/scratch/project_xxxx/yourcscusername    # Replace xxxx and yourcscusername
@@ -43,7 +42,6 @@ title: Tutorial - Singularity introduction continued
 
 💡 You can use `bind`to set the container, for example, to find input data or configuration files from a certain directory.
 
-{:start="6"}
 6. Bind host directory specified in `$SCRATCH` into directory `/input`:
 ```bash
 singularity exec --bind $SCRATCH:/input tutorial.sif ls /input
@@ -60,7 +58,8 @@ singularity exec --bind $SCRATCH:/input tutorial.sif ls /input
     singularity_wrapper exec ls $SCRATCH
     ```
 
-‼️ Since some modules set `$SING_IMAGE` when loaded, it is a good idea to start with `module purge` if you plan to use it, to make sure correct image is used.
+‼️ Since some modules set `$SING_IMAGE` when loaded, it is a good idea to start with `module purge` or `unset SING_IMAGE`
+if you plan to use it, to make sure correct image is used.
 
 ## Environment variables
 💬 Some software may reguire some environment variables to be set, e.g. to point to some reference data or a configuration file.
@@ -112,6 +111,34 @@ singularity exec --bind $SCRATCH:/input tutorial.sif ls /input
     ```
 
 💡 If you can't locate the desired binary with `find`, you can always use `singularity shell` to explore the container.
+
+## Running Singularity as a batch job
+💡 `Singularity exec` is the run method you will typically use in a batch job script.
+
+1. Make a file called `test.sh`:
+    ```bash
+    module load nano   # The computing node does not have nano by default
+    nano test.sh
+    ```
+2. Copy the following contents into the file and change "project_xxxx" to the correct project name:
+    ```bash
+   #!/bin/bash
+   #SBATCH --job-name=test           # Name of the job visible in the queue.
+   #SBATCH --account=project_xxxx    # Choose the billing project. Has to be defined!
+   #SBATCH --partition=test          # Job queues: test, interactive, small, large, longrun, hugemem, hugemem_longrun
+   #SBATCH --time=00:01:00           # Maximum duration of the job. Max: depends of the partition. 
+   #SBATCH --mem=1G                  # How much RAM is reserved for job per node.
+   #SBATCH --ntasks=1                # Number of tasks. Max: depends on partition.
+   #SBATCH --cpus-per-task=1         # How many processors work on one task. Max: Number of CPUs per node.
+
+   singularity exec tutorial.sif hello_world
+    ```
+3. Submit the job to the queue with:
+    ```bash
+   sbatch test.sh
+    ```
+
+💡 For more information on batch jobs, please see [CSC Docs pages](https://docs.csc.fi/computing/running/getting-started/).
 
 ## More information
 
