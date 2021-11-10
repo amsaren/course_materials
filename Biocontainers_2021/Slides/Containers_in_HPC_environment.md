@@ -28,8 +28,7 @@ Unported License, [http://creativecommons.org/licenses/by-sa/4.0/](http://creati
 - Since home directory is quite small, it's best to direct the files to some other location
   - Especially `.singularity/cache` can fill up fast if you pull/build containers
     - Can be safely emptied
-- You can set other location by setting environment variables 
-`$SINGULARITY_CACHEDIR` and `$SINGULARITY_TMPDIR`
+- You can set other location by setting environment variables `$SINGULARITY_CACHEDIR` and `$SINGULARITY_TMPDIR`
 
 # Running containers
 - Containers can be run jus as any other software
