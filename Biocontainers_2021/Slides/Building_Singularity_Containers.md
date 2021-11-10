@@ -5,6 +5,18 @@ lang: en
 
 # Building Singularity Containers {.title}
 
+<div class="column">
+![](https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-sa.png)
+</div>
+<div class="column">
+<small>
+All material (C) 2020-2021 by CSC -IT Center for Science Ltd.
+This work is licensed under a **Creative Commons Attribution-ShareAlike** 4.0
+Unported License, [http://creativecommons.org/licenses/by-sa/4.0/](http://creativecommons.org/licenses/by-sa/4.0/)
+</small>
+</div>
+
+# Building Singularity Containers
 - There two main ways to build Singularity containers
   - Building interactively using the sandbox mode
   - Building using a definition file
