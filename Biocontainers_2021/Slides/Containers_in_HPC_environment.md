@@ -7,7 +7,7 @@ lang: en
 
 # Basics 1/2
 - Singularity available in Puhti and Mahti
-- Singularity available both in login nodes and compute nodes
+  - available both in login nodes and compute nodes
   - Only light tasks (`singularity inspect` etc) should be done in the login nodes
   - All actual computation should be done in the compute nodes, i.e.  as a batch 
   job or in an interactive session (´sinteractive´)
@@ -37,14 +37,21 @@ lang: en
   - Some modules set `$SING_IMAGE`. If you have problems do `module purge` or `unset SING_IMAGE`
 - Any other options can be set by setting `$SING_FLAGS`
 
-# Special resources
+# Special resources: GPU
+- To Use GPU:
+  - Reserve it in the batch job script: `--gres=gpu:v100:<number_of_gpus_per_node>`
+  - For some containers you need to add `--nv` 
+    - In case of CSC installed software, check the Docs
 
+# Special resources: NVMe
 - To use fast local NVMe disk: 
   - Reserve it in the batch job script: `#SBATCH --gres=nvme:<local_storage_space_per_node>` 
   - If using `singularity_wrapper` `$LOCAL_SCRATCH` is bound automatically. 
   - If not, it has to be bound, e.g. `--bind $LOCAL_SCRATCH:$LOCAL_SCRATCH`
 
-- To Use GPU:
-  - Reserve it in the batch job script: `--gres=gpu:v100:<number_of_gpus_per_node>`
-  - For some containers you need to add `--nv` 
-    - In case of CSC installed software, check the Docs
+# SquashFS
+- Lustre is very inefficient in handling large number of files in single directory
+- When using Singularity containerised tools you can use SquashFS to package files
+  - Single file on Host filesystem
+  - Can be mounted as a directory inside the container
+- See instructions in [Docs](https://docs.csc.fi/computing/containers/run-existing/#mounting-datasets-with-squashfs)
