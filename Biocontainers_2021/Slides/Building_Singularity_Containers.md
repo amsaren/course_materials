@@ -73,7 +73,7 @@ comfortable working with.
 
 # Definition file: Header
 - Header is compulsory and needs to be in the beginning of the file
-- It defines the `Bootstrap agent` and source used to build the base OS
+- It defines the `Bootstrap agent` and `source` used to build the base OS
   - There are different bootstrap agents for different sources
   - Syntax depends on the bootstrap agent
 
@@ -154,7 +154,7 @@ comfortable working with.
   singularity run myprog.sif
   ```
   or
- ```
+  ```
   ./myprog.sif
   ```
 
@@ -176,14 +176,14 @@ comfortable working with.
 # %labels
 - Can be used to add metadata, e.g. contact information
   
-  ```
+   ```
   %labels
     Maintainer my.address@example.net
-
+  ```
 - Can be seen with:
   ```
   singularity inspect --labels example.sif
-  ```  ```
+  ```
 
 # %help
 - Add usage instructions etc
@@ -197,7 +197,7 @@ comfortable working with.
   ```
   singularity run-help example.sif
   ```
-  
+
 # Example definition file
 ```
 Bootstrap: docker
