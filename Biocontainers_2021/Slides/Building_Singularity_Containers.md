@@ -22,23 +22,23 @@ Unported License, [http://creativecommons.org/licenses/by-sa/4.0/](http://creati
   - Building interactively using the sandbox mode
 
 # Pros and cons: Definition files
-Pros:
-- Definition files reusable
-  - Updating a software often just updateing the version number and re-building
-- Some containers can be built with `--remote` option (no root access needed).
-Cons:
-- Can be a bit cumbersome if you have to try many things (e.g. installing missing libraries)
-  - Building a container can take a while, and if the failing command is towards 
+- Pros:
+  - Definition files reusable
+    - Updating a software often just updateing the version number and re-building
+  - Some containers can be built with `--remote` option (no root access needed).
+- Cons:
+  - Can be a bit cumbersome if you have to try many things (e.g. installing missing libraries)
+    - Building a container can take a while, and if the failing command is towards 
   the end iteration can take time
 
 # Pros and cons: Sandbox mode
-Pros: 
-- Easier to try different things
-- Any additional files can be copied directly to correct directory
-Cons:
-- Results not easily reproducible or reusable
-  - e.g. to update a software you'll have to start from scratch again
-- Always need root access
+- Pros: 
+  - Easier to try different things
+  - Any additional files can be copied directly to correct directory
+- Cons:
+  - Results not easily reproducible or reusable
+    - e.g. to update a software you'll have to start from scratch again
+  - Always need root access
 
 # Base images
 - In both case you start with a base OS image and add
@@ -48,7 +48,7 @@ specifying a bootstrap agent and source
 - Usually you'll want to start with a barebones image with bare essentials
   - This way you can avoid any possible conflicts from the start
 
-  # Base image selection
+# Base image selection
 - Select a base image that best suits your needs
   - E.g. if you have installation instructions for a certain Linux distro, start with that
   - If you need MPI, it's best to start with an image that is close to the host system
@@ -79,23 +79,25 @@ comfortable working with.
 
 # Header example 1
 - Example using "library" bootstrap agent and an image from Sylabs Container Library:
-```
-Bootstrap: library
-From: debian:7
-```
+  ```
+  Bootstrap: library
+  From: debian:7
+  ```
 
 # Header example 3
 - Example using "docker" bootstrap agent and an image from DockerHub:
+```
 Bootstrap: docker
 From: ubuntu:20.04
-
+```
 # Header example 3
 - Example using "yum" bootsratp agent and distrubution files from CentOs site:
+```
 Bootstrap: yum
 OSVersion: 7
 MirrorURL: http://mirror.centos.org/centos-%{OSVERSION}/%{OSVERSION}/os/$basearch/
 Include: yum
-
+```
 # Optional sections
 - There are sections to define the environment variables, installation commands, metadata etc
 - All sections are optional and can be in any order
