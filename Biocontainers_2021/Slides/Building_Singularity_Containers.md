@@ -31,9 +31,7 @@ Unported License, [http://creativecommons.org/licenses/by-sa/4.0/](http://creati
   - Most containers can be built with `--remote` option (no root access needed).
 - Cons:
   - Can be a bit cumbersome if you have to try many things (e.g. installing missing libraries)
-    - Building a container can take a while, and if the failing command is towards 
-  the end iteration can take time
-
+   
 # Pros and cons: Sandbox mode
 - Pros: 
   - Easier to try different things
@@ -41,10 +39,10 @@ Unported License, [http://creativecommons.org/licenses/by-sa/4.0/](http://creati
 - Cons:
   - Results not easily reproducible or reusable
     - e.g. to update a software you'll have to start from scratch again
-  - Always need root access
+  - Always needs root access
 
 # Base images
-- In both case you start with a base OS image and add
+- In both cases you start with a base OS image and add
 your applications and dependencies
 - You start with an existing container (local file or in a registry) or by
 specifying a bootstrap agent and source
@@ -86,12 +84,13 @@ comfortable working with.
   From: debian:7
   ```
 
-# Header example 3
+# Header example 2
 - Example using "docker" bootstrap agent and an image from DockerHub:
   ```
   Bootstrap: docker
   From: ubuntu:20.04
   ```
+
 # Header example 3
 - Example using "yum" bootsratp agent and distrubution files from CentOs site:
   ```
@@ -100,6 +99,7 @@ comfortable working with.
   MirrorURL: http://mirror.centos.org/centos-%{OSVERSION}/%{OSVERSION}/os/$basearch/
   Include: yum
   ```
+
 # Optional sections
 - There are sections to define the environment variables, installation commands, metadata etc
 - All sections are optional and can be in any order
@@ -139,6 +139,7 @@ comfortable working with.
     apt install python
     pip install numpy
   ```
+
 # %runscript
 - Defines the runscript
 - Will be stored in file `/singularity` inside the container
@@ -150,6 +151,7 @@ comfortable working with.
    ```
   ./myprog.sif
   ```
+
 # %startscript
 - Similar to the `%runscript` section
 - Executed when run with:
@@ -224,9 +226,9 @@ From: ubuntu:20.04
   ```
   sudo singuluraity build myprog.sif myprog
   ```
+
 # Sandbox mode 4/4 (optional)
 - Make a definition file and build a production image from it
   - Helps with updating and re-using containers
   - Also necesary if you wish to distribute your container wider
 - Production image can be transferred to e.g. Puhti and run with user rights
-
