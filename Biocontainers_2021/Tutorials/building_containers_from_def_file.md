@@ -180,7 +180,8 @@ singularity exec macs3.sif macs3 --help
 #### 2.3.2 Installing from source code
 
 Since MACS3 is still under development, we might prefer to install from source code instead to include any
-changes not yet available in PyPI. 
+changes not yet available in PyPI. If we clone the latest version from git, we can update the software simply
+by re-running the `singularity build` command.
 
 For this we also need to install git and python3-devel packages.
 
