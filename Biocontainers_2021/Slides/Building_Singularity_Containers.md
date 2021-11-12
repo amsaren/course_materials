@@ -18,8 +18,18 @@ Unported License, [http://creativecommons.org/licenses/by-sa/4.0/](http://creati
 
 # Building Singularity Containers
 - There two main ways to build Singularity containers
-  - Building interactively using the sandbox mode
   - Building using a definition file
+  - Building interactively using the sandbox mode
+
+# Pros and cons: Definition files
+Pros:
+- Definition files reusable
+  - Updating a software often just updateing the version number and re-building
+- Some containers can be built with `--remote` option (no root access needed).
+Cons:
+- Can be a bit cumbersome if you have to try many things (e.g. installing missing libraries)
+  - Building a container can take a while, and if the failing command is towards 
+  the end iteration can take time
 
 # Pros and cons: Sandbox mode
 Pros: 
@@ -30,30 +40,20 @@ Cons:
   - e.g. to update a software you'll have to start from scratch again
 - Always need root access
 
-# Pros and cons: Definition files
-Pros:
-- Definition files reusable
-  - Updating a software often just updateing the version number and re-building
-- Some containers can be built with `--remote` option (no root access needed).
-Cons:
-- Can be a bit cumbersome if you have to try many things
-  - Building a conatiner can take a while, and if the failing command is towards 
-  the end iteration can take time
-
 # Base images
 - In both case you start with a base OS image and add
 your applications and dependencies
-- Any existing container (local file or in a registry)
-can be used
+- You start with an existing container (local file or in a registry) or by
+specifying a bootstrap agent and source
 - Usually you'll want to start with a barebones image with bare essentials
-  - This way you eliminate any possible conflicts from the start
+  - This way you can avoid any possible conflicts from the start
 
   # Base image selection
 - Select a base image that best suits your needs
   - E.g. if you have installation instructions for a certain Linux distro, start with that
   - If you need MPI, it's best to start with an image that is close to the host system
     - E.g for Puhti CentOs 7
-- If there are no specific reason to choose a specific one, just pick the one you most 
+- If there are no specific reasons to choose a particular distro, just pick the one you are most 
 comfortable working with.
 
 # Base image sources
@@ -63,21 +63,6 @@ comfortable working with.
   - [SingularityHub](https://datasets.datalad.org)
     - Note that since early 2021 SingularityHub is no longer maintained and is read-only. 
     For new iamges it's best to use other sources, e.g. DockerHub
-
-# Sandbox mode
-- 1. Build a basic container in sandbox mode (`--sandbox`)
-    - Uses a folder structure instead of an image file
-- 2. Open a shell in the container and install software
-  - Depending on base image system, package managers can be used to install 
-    libraries and dependencies (`apt install` , `yum install` etc)
-  - Installation as per software developer instructions
-  
-# Sandbox mode
-- 3. Build a production image from the sandbox
-- 4. (optional) Make a definition file and build a production image from it
-  - Mostly necesary if you wish to distribute your container wider
-  - Also helps with updating and re-using containers
-- Production image can be transferred to e.g. Puhti and run with user rights
 
 # Definition files
 - A definition file is a set of intructions that can be used to build a container
@@ -94,8 +79,10 @@ comfortable working with.
 
 # Header example 1
 - Example using "library" bootstrap agent and an image from Sylabs Container Library:
+```
 Bootstrap: library
 From: debian:7
+```
 
 # Header example 3
 - Example using "docker" bootstrap agent and an image from DockerHub:
@@ -117,8 +104,9 @@ Include: yum
 - See tutorial and Singularity documentation for descriptions.
 
 #%setup
-- Commands to be run on host after base conatiner base os is running
+- Commands to be run on host after the base container is running
 - Care should be taken as these command are run on host with root rights
+  - Check especially if you got the definition file from the net
 - Rarely needed and should be avoided
 
 #%files
@@ -176,3 +164,29 @@ From: ubuntu:20.04
 %files
     hello_world /usr/bin/hello_world
     hello2  /found/me/hello2
+
+
+# Sandbox mode 1/4
+- 1. Build a basic container in sandbox mode (`--sandbox`)
+  - You can start with a simple definition file (just the header) or
+  from a bootstrap agent: 
+    - `sudo singularity build --sandbox myprog library://centos:7.7`
+  - Creates a folder structure instead of an image file
+  - You can copy files directly to correct subfolder
+
+# Sandbox mode 2/4
+- 2. Open a shell in the container and install software
+  - To open in writable mode use option `singularity shell --writable myprog` 
+  - Depending on base image system, package managers can be used to install 
+    libraries and dependencies (`apt install` , `yum install` etc)
+  - Installation as per software developer instructions
+  
+# Sandbox mode
+- 3. Build a production image from the sandbox
+
+# Sandbox mode
+- 4. (optional) Make a definition file and build a production image from it
+  - Mostly necesary if you wish to distribute your container wider
+  - Also helps with updating and re-using containers
+- Production image can be transferred to e.g. Puhti and run with user rights
+
