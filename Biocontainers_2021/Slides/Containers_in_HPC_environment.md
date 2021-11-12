@@ -19,9 +19,9 @@ Unported License, [http://creativecommons.org/licenses/by-sa/4.0/](http://creati
 # Basics 1/2
 - Singularity available in Puhti and Mahti
   - available both in login nodes and compute nodes
-  - Only light tasks (`singularity inspect` etc) should be done in the login nodes
+  - Only light tasks (`singularity run-help` etc) should be done in the login nodes
   - All actual computation should be done in the compute nodes, i.e.  as a batch 
-  job or in an interactive session (´sinteractive´)
+  job or in an interactive session (`sinteractive`)
 
 # Basics 2/2
 - Default location for Singularity temporary files is `~/.singularity`
@@ -32,7 +32,7 @@ Unported License, [http://creativecommons.org/licenses/by-sa/4.0/](http://creati
 
 # Running containers
 - Containers can be run jus as any other software
-  - Write the batch job script as usual
+  - Batch job scripts same for containerized and non-containerized sofware
 - When running as a batch job, it is best to use `singularity exec`
   - Depending on the runscript `singularity run` can cause problems, i.e. 
   environment not inherited correctly, etc
@@ -50,7 +50,9 @@ Unported License, [http://creativecommons.org/licenses/by-sa/4.0/](http://creati
 # Special resources: GPU
 - To Use GPU:
   - Reserve it in the batch job script: `--gres=gpu:v100:<number_of_gpus_per_node>`
-  - For some containers you need to add `--nv` 
+  - For some containers you need to add `--nv`
+    - Allows container to use host driver stack, cuda, etc
+    - Some containers include cuda etc, and don't nee `--nv`
     - In case of CSC installed software, check the Docs
 
 # Special resources: NVMe

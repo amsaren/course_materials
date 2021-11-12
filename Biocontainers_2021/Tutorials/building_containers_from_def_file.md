@@ -23,15 +23,54 @@ access on host system, as long as you can log into the Sylabs service.
 We will be building a container for [MACS3](https://github.com/macs3-project/MACS) software.
 
 
-## Preliminaries
+## 1. Remote Builder
 
+### 1.1 Create an Access Token and login
 Go to SyLabs [Singularity Container Services](https://cloud.sylabs.io/home) page and sign in.
 You should be able to use your Google, GitHub, GitLab or Microsoft account to log in.
 
 Go to [Account Management](https://cloud.sylabs.io/auth) and create a new Access Token.
 
-Save the token, as we will need it later in the tutorial, and it can not be displayed again
-once you close the browser window.
+Save the token, as it can not be displayed again once you close the browser window.
+
+You will first need to log in. Give this command in Puhti command line: 
+```bash
+singularity remote login
+```
+When prompted, paste the access token you created earlier and press `enter`.
+
+💬The Access token is saved in `$HOME/.singularity/remote.yaml`. Login is valid as 
+long as the file exists and the Access Token is valid, so you don't need to login every time.
+
+## 1.2 Building an image
+
+
+Once we have completed our definition file we can build the container image.
+
+The basic command to use on a system where you have root access is:
+```bash
+sudo singularity build macs3.sif macs3.def
+```
+This will not work on Puhti, so we will use [Sylabs Remote Builder](https://cloud.sylabs.io/builder) 
+service.
+
+
+
+The build command is as above, but we omit `sudo` and add option `--remote`.
+```bash
+singularity build --remote macs3.sif macs3.def
+```
+Alternatively you can upload or paste the definition file to the web interface at Sylabs,
+and then use `singularity pull` to download the image.
+
+Finally you can test your new image:
+```bash
+singularity exec macs3.sif macs3 --help
+```
+
+I have provided some [example definition files](https://github.com/amsaren/course_materials/tree/main/Biocontainers_2021/Examples),
+including the various versions of this tutorial.
+
 
 
 ## Create a definition file
@@ -229,37 +268,4 @@ singularity run-help macs3.sif
   singularity exec macs3.sif macs3 --help
 ```
 
-## Building the image
 
-Once we have completed our definition file we can build the container image.
-
-The basic command to use on a system where you have root access is:
-```bash
-sudo singularity build macs3.sif macs3.def
-```
-This will not work on Puhti, so we will use [Sylabs Remote Builder](https://cloud.sylabs.io/builder) 
-service.
-
-You will first need to log in: 
-```bash
-singularity remote login
-```
-Paste the access token you created earlier and press `enter`.
-
-💬The Access token is saved in `$HOME/.singularity/remote.yaml`. Login is valid as long as the file exists and 
-the Access Token is valid, so you don't need to login every time.
-
-The build command is as above, but we omit `sudo` and add option `--remote`.
-```bash
-singularity build --remote macs3.sif macs3.def
-```
-Alternatively you can upload or paste the definition file to the web interface at Sylabs,
-and then use `singularity pull` to download the image.
-
-Finally you can test your new image:
-```bash
-singularity exec macs3.sif macs3 --help
-```
-
-I have provided some [example definition files](https://github.com/amsaren/course_materials/tree/main/Biocontainers_2021/Examples),
-including the various versions of this tutorial.

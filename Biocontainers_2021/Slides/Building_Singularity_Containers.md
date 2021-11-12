@@ -20,10 +20,29 @@ Unported License, [http://creativecommons.org/licenses/by-sa/4.0/](http://creati
 - There two main ways to build Singularity containers
   - Building interactively using the sandbox mode
   - Building using a definition file
-- In both case you start with a base OS image and add
-your applications and dependencies
+
+# Pros and cons: Sandbox mode
+Pros: 
+- Easier to try different things
+- Any additional files can be copied directly to correct directory
+Cons:
+- Results not easily reproducible or reusable
+  - e.g. to update a software you'll have to start from scratch again
+- Always need root access
+
+# Pros and cons: Definition files
+Pros:
+- Definition files reusable
+  - Updating a software often just updateing the version number and re-building
+- Some containers can be built with `--remote` option (no root access needed).
+Cons:
+- Can be a bit cumbersome if you have to try many things
+  - Building a conatiner can take a while, and if the failing command is towards 
+  the end iteration can take time
 
 # Base images
+- In both case you start with a base OS image and add
+your applications and dependencies
 - Any existing container (local file or in a registry)
 can be used
 - Usually you'll want to start with a barebones image with bare essentials
@@ -44,25 +63,6 @@ comfortable working with.
   - [SingularityHub](https://datasets.datalad.org)
     - Note that since early 2021 SingularityHub is no longer maintained and is read-only. 
     For new iamges it's best to use other sources, e.g. DockerHub
-
-# Pros and cons: Sandbox mode
-Pros: 
-- Easier to try different things
-- Any additional files can be copied directly to correct directory
-Cons:
-- Results not easily reproducible or reusable
-  - e.g. to update a software you'll have to start from scratch again
-- Always need root access
-
-# Pros and cons: Definition files
-Pros:
-- Definition files reusable
-  - Updating a software often just updateing the version number and re-building
-- Some containers can be built with `--remote` option (no root access needed).
-Cons:
-- Can be a bit cumbersome if you have to try many things
-  - Building a conatiner can take a while, and if the failing command is towards 
-  the end iteration can take time
 
 # Sandbox mode
 - 1. Build a basic container in sandbox mode (`--sandbox`)
@@ -136,6 +136,8 @@ Include: yum
 #%post
 - Any commands to be run in the container after base container is up and running
 - Typically includes any installation commands
+  - Note that base images typically don't include any programming languages, compilers etc, 
+  so start by installing what you need.
 %post
   apt install python
   pip install numpy
