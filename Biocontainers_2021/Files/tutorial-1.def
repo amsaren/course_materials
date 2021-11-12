@@ -1,2 +1,8 @@
 Bootstrap: docker
 From: ubuntu:20.04
+
+%runscript
+  echo "Hello from the container"
+
+%help
+  This is a test image. It does nothing at all.

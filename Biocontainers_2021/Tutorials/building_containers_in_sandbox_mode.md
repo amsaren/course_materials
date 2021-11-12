@@ -29,7 +29,7 @@ process itself.
 In this tutorial we only cover the basics. Detailed instructions can be found
 in the [Singularity manual](https://sylabs.io/guides/3.7/user-guide).
 
-## Sandbox mode
+## 1. Create the base image
 
 One way to create a Singularity container is to do it in so-called sandbox
 mode. Instead of an image file, we create a directory structure
@@ -59,6 +59,8 @@ sudo singularity build --sandbox mcl centos.def
 Note that instead of an image file, we created a directory called `mcl`. If
 you need to include some reference files etc, you can copy them to correct subfolder.
 
+## 2. Open a shell in the container
+
 We can then open a shell in the container. We need the container file system 
 to be writable, so we include option `--writable`:
 ```bash
@@ -66,11 +68,13 @@ sudo singularity shell --writable mcl
 ```
 The command prompt should now be `singularity>`
 
+## 3. Installing the software
+
 If there is a need to make the container as small as possible, we should only
 install the dependencies we need. A smaller container will load faster, so this
-can be a considertaion in workflows where the same container is started repeatedly
+can be a considertaion in workflows, where the same container is started repeatedly
 (e.g. once for each input file). Usually the size is not that critical, so we may
-opt more for ease of use. 
+opt more for ease of installation. 
 
 In this case we install application group "Development tools" that includes 
 most of the components we need (C, C++, make), but also a lot of things we 
@@ -124,6 +128,8 @@ We can now exit the container:
 ```bash
 exit
 ```
+## 4. Building the production image
+
 In order to run the container without sudo rights we need to build
 a production image from the sandbox:
 
@@ -134,14 +140,16 @@ We can now test it. Note that we no longer need `sudo`:
 ```bash
 singularity exec mcl.sif mcl --version
 ```
+The image could now be transferred to e.g. Puhti and used there as well.
 
-## Definition file
+
+## 5. Create a definition file (optional)
 
 The above method is applicable as-is if you intend the
 container to be only used by you and your close collaborators.
 However, if you plan to distribute it wider, it's best to write
 a definition file for it. That way the other users can see
-what is in the container and they can, if they so choose, easily 
+what is in the container, and they can, if they so choose, easily 
 rebuild the production image.
 
 A definition file will also make it easier to modify and re-use 

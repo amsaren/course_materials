@@ -26,6 +26,7 @@ We will be building a container for [MACS3](https://github.com/macs3-project/MAC
 ## 1. Remote Builder
 
 ### 1.1 Create an Access Token and login
+
 Go to SyLabs [Singularity Container Services](https://cloud.sylabs.io/home) page and sign in.
 You should be able to use your Google, GitHub, GitLab or Microsoft account to log in.
 
@@ -33,49 +34,47 @@ Go to [Account Management](https://cloud.sylabs.io/auth) and create a new Access
 
 Save the token, as it can not be displayed again once you close the browser window.
 
-You will first need to log in. Give this command in Puhti command line: 
+Log into Puhti.
+
+You will first need to authenticate yourself with the Remote Builder site.
+
+Give this command in Puhti command line: 
 ```bash
 singularity remote login
 ```
-When prompted, paste the access token you created earlier and press `enter`.
+When prompted, paste the Access Token you created earlier and press `enter`.
 
-💬The Access token is saved in `$HOME/.singularity/remote.yaml`. Login is valid as 
+💬The Access Token is saved in `$HOME/.singularity/remote.yaml`. Login is valid as 
 long as the file exists and the Access Token is valid, so you don't need to login every time.
 
-## 1.2 Building an image
+### 1.2 Building an image
 
+Let's try building an image.
 
-Once we have completed our definition file we can build the container image.
-
-The basic command to use on a system where you have root access is:
+Download an example definition file:
 ```bash
-sudo singularity build macs3.sif macs3.def
+wget https://raw.githubusercontent.com/amsaren/course_materials/main/Biocontainers_2021/Files/tutorial-1.def
+```
+The basic command to use on a system where you have root access would be:
+```bash
+sudo singularity build test.sif tutorial-1.def
 ```
 This will not work on Puhti, so we will use [Sylabs Remote Builder](https://cloud.sylabs.io/builder) 
 service.
 
-
-
 The build command is as above, but we omit `sudo` and add option `--remote`.
 ```bash
-singularity build --remote macs3.sif macs3.def
+singularity build --remote test.sif tutorial-1.def
 ```
 Alternatively you can upload or paste the definition file to the web interface at Sylabs,
 and then use `singularity pull` to download the image.
 
 Finally you can test your new image:
 ```bash
-singularity exec macs3.sif macs3 --help
+singularity run test.sif
 ```
 
-I have provided some [example definition files](https://github.com/amsaren/course_materials/tree/main/Biocontainers_2021/Examples),
-including the various versions of this tutorial.
-
-
-
-## Create a definition file
-
-Log into Puhti.
+## 2. Creating a definition file
 
 Create an empty definition file. You can use a text editor of your choice, e.g. `nano`:
 ```bash
@@ -88,15 +87,14 @@ different aspects of the container. All sections are optional. We will discuss s
 used options here. Please see the [Singularity documentation](https://sylabs.io/guides/3.8/user-guide/definition_files.html) 
 for a full list and detailed descriptions.
 
-
-### Selecting the base image
+### 2.1 Selecting the base image
 
 You typically start by selecting a suitable base image. This will have the basic operating system,
 file system etc for your image. These can be selected from e.g Singularity container library, Docker 
 Hub or Singularity Hub. The possible sources and options are discussed in more detail in the lecture.
 
 Selection of base image depends on the software. If, for example, the software developer provide 
-installation instructions for a certain version of Ubuntu, it's probably easiest to start with that.
+installation instructions for a certain Linux distribution, it's probably easiest to start with that.
 
 If you plan to build an image with MPI support, it is easiesto start with something close to the host 
 system. In case of Puhti this would be CentOs 7.
@@ -111,14 +109,13 @@ Bootstrap: docker
 From: ubuntu: 20.04
 ```
 
-### Including files
+### 2.2 Including files
 
 When building an image on a local computer, you can include files form host file system. These are defined
 in the `%files` section. The format is `/path/in/host /path/in/container`, so to include file `myfile.txt`
 from the current directory to directory `/some/path` inside the container, you would add:
 ```text
 %files
-
   myfile.txt /some/path/myfile.txt
 ```
 When using Remote Builder this won't work (local files are not available at the remote build server), so if 
@@ -127,16 +124,16 @@ you need to include files make them available from net and download the from ins
 
 💬These tools are often not included in the base image, so you will need to install them first.
 
-It is a good practise to do this anyway if you plan on distributing the container, as this way other people can 
-build the container without needing files only available in your system.
+Including files from the local system can be considered more secure, but downloadin everything will allow
+other people to build the container without needing files only available in your system.
 
 MACS3 does not need any extra files, so in this case we can just omit the whole section.
 
 
-### Installing software
+### 2.3 Installing software
 
 All commands that should be run inside the container after the base image is running, are included in section `%post`.
-These typically including all installation commands.
+These typically include all installation commands.
 
 As these commands are executed inside the container, we usually have access to package manager softwares for each 
 distribution, e.g. `apt` for Ubunbtu (depends on the base image used). All commands are executed with root rights by 
@@ -152,26 +149,43 @@ Add the following lines to the definition file:
 
 ```text
 %post
-
   # Install python
   apt update
   apt install python3 -y
   apt install pip -y
-  ln -s /usr/bin/python3 /usr/bin/python
 ```
 💬Indentation is optional, but improves readability. 
 💬Comments will make the definition file easier to read for others (and also for yourself after some time has passed).
 
-Easiest way to install MACS3 in by using Pypi:
+We will experiment with different installation methods to test some of the options in definition files.
+
+#### 2.3.1 Installing from PyPI
+
+MACS3 is available in PyPI, so the easiest way to install it is by using `pip`.
+
+Add the following lines to the definition file:
 ```text
   # Install MACS3
   pip install MACS3
 ```
+You can now try to build it:
+```bash
+singularity build --remote macs3.sif macs3.def
+```
+If the build finishes, try it:
+```bash
+singularity exec macs3.sif macs3 --help
+```
 
-Since MACS3 is still under development, we might prefer to install from source instead. For this we also need to 
-install git and python3-devel packages.
+#### 2.3.2 Installing from source code
+
+Since MACS3 is still under development, we might prefer to install from source code instead to include any
+changes not yet available in PyPI. 
+
+For this we also need to install git and python3-devel packages.
+
+Comment out or delete the pip command, and add the following to the definition file:
 ```text
-  # Install MACS3
   apt install python3-devel -y
   apt install git -y
   git clone https://github.com/macs3-project/MACS.git -recurse-submodules
@@ -179,8 +193,16 @@ install git and python3-devel packages.
   pip install -r requirements.txt
   python setup.py install
 ```
+You can now try to build it:
+```bash
+singularity build --remote macs3.sif macs3.def
+```
+If the build finishes, try it:
+```bash
+singularity exec macs3.sif macs3 --help
+```
 
-### Setting up the environment
+#### 2.3.3 Setting up the environment
 
 Any commands that set up the environment go to the `%environment` section.
 
@@ -189,20 +211,21 @@ The default `$PATH` for a Singularity environment is
 /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 ```
 
-Since we have root access inside the container, we can usually install to default system locations, and
-thus don't need to adjust the environment. Sometimes however, especially when using Conda or some software 
-specific installations scripts, the installation may end up in some other location.
+The default installation location for software is usually one of the folders in the default 
+`$PATH`, and thus we don't need to adjust the environment. 
 
-For example if we choose to install MACS3 in non-standard location in the last section:
+Sometimes however, especially when using Conda or some software specific installations scripts, the 
+installation may end up in some other location.
+
+To test this, let's edit the install command above a bit to install to folder /app/macs instead:
 
 ```text
-python setup.py install --prefix=/app/macs
+  python setup.py install --prefix=/app/macs
 ```
 
-We would need to adjust `$PATH` and `$PYTHONPATH`:
+We will now need to adjust `$PATH` and `$PYTHONPATH`:
 ```text
 %environment
-
   export PATH=/app/macs/bin:$PATH
   export PYTHONPATH=/app/macs/lib/python3.8/site-packages
 ```
@@ -210,8 +233,25 @@ We would need to adjust `$PATH` and `$PYTHONPATH`:
 
 In the finished container image these commands are stored in script `/environment`.
 
+You can try this definition file as above:
 
-### Adding a runscript
+```bash
+singularity build --remote macs3.sif macs3.def
+```
+If the build finishes, try it:
+```bash
+singularity exec macs3.sif macs3 --help
+```
+
+## 3. Adding addition metadata
+
+If you are building the container image just for yourself, you may be happy with an image with
+just the basic functionality.
+
+If you plan of sharing the image with others, it is helpfull to add some additional metada to the
+definition file.
+
+### 3.1 Adding a runscript
 
 Runscript is a list of commands that will be executed when the container is run with `singularity run` or when the container 
 is run as an executable. It is defined in section `%runscript`.
@@ -220,12 +260,12 @@ In the finished container image these commands are stored in script `/singularit
 
 For containers that run a service, e.g. a web server or similar, the runscript usually starts the service.
 
-For application containers, like the MACS3 container we are building, it's up to the author to decide what to put here. One option is to make
-the container run any command line options as a command. This will make `singularity run` behave similarily to `singularity exec`.
+For application containers, like the MACS3 container we are building, it's up to the author to decide what to put 
+here. One option is to make the container run any command line options as a command. This will make `singularity run` 
+behave similarily to `singularity exec`. You can also choose to leave it empty or e.g. make it print out usge help.
 
-```tetx
+```text
 %runscript
-
   exec "$@"
 ```
 💬In a HPC system, especially with batch jobs, it's best to always use `singularity exec` to run.
@@ -235,15 +275,14 @@ The runscript of an existeing container can be checked with:
 singularity inspect --runscript macs3.sif
 ```
 
-### Adding information about the container
+### 3.2 Adding information about the container
 
-Singularity automatically add some metadata to the container. This includes Singularity version number, build date, base 
+Singularity automatically adds some metadata to the container. This includes Singularity version number, build date, base 
 image etc. If you wish to add some additional metadata, e.g your contact information, you do it in section `%labels`. This 
 is advisable, especially if you wish to distribute the container.
 
 ```text
 %labels
-
   Maintainer my.address@example.net
   Version v1.0
 ```
@@ -251,6 +290,8 @@ This information can be checked with command:
 ```bash
 singularity inspect --labels macs3.sif
 ```
+
+### 3.3 Adding help text
 
 It is also possible to add usage information. This goes to section `%help` and can be viewed with
 command:
@@ -260,12 +301,22 @@ singularity run-help macs3.sif
 
 ```text
 %help
-
   This is a container for MACS3 software
   https://github.com/macs3-project/MACS
   MACS3 is distributed under BSD 3-Clause License
   Usage:
   singularity exec macs3.sif macs3 --help
 ```
+Try adding some additional metadata to the definition file and rebuild.
+```bash
+singularity build --remote macs3.sif macs3.def
+```
+You can check the information you added:
+```bash
+singularity inspect --runscript macs3.sif
+singularity inspect --labes macs3.sif
+singularity run-help macs3.sif
+```
 
-
+We have provided some [example definition files](https://github.com/amsaren/course_materials/tree/main/Biocontainers_2021/Files),
+including the various versions of this tutorial. 

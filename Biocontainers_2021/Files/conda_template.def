@@ -17,5 +17,8 @@ From: continuumio/miniconda3
   # Often this is only thing you need to edit
   conda install myprog
 
+  # Cleaning up cache etc will make a smaller image file
+  conda clean --all
+
 %runscript
     exec "$@"
