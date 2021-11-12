@@ -107,7 +107,7 @@ comfortable working with.
 - There are sections to define the environment variables, installation commands, metadata etc
 - All sections are optional and can be in any order
 - Section labels start with %
-  - Available section labels: %setup, %files, %environment, %post, %runscript, %startscript, %test, %labels, %help
+  - Available section labels: `%setup, %files, %environment, %post, %runscript, %startscript, %test, %labels, %help`
 - See Singularity documentation for full descriptions.
 
 # %setup
@@ -221,7 +221,7 @@ From: ubuntu:20.04
 
 # Sandbox mode 2/4
 - Open a shell in the container and install software
-  - To open in writable mode use option `--writable` 
+  - To open in writable mode use option `--writable`
     ```
     sudo singularity shell --writable myprog
     ```
@@ -234,9 +234,13 @@ From: ubuntu:20.04
   ```
   sudo singuluraity build myprog.sif myprog
   ```
+  - Production image can be run with user rights 
+- Transfer image file to Puhti for use
 
 # Sandbox mode 4/4 (optional)
-- Make a definition file and build a production image from it
+- Make a definition file and re-build a production image from it
   - Helps with updating and re-using containers
   - Also necesary if you wish to distribute your container wider
-- Production image can be transferred to e.g. Puhti and run with user rights
+- If you you plan on doing this, keep track of the commands you use
+  - Command `history` can help, but if you try many things, keep track 
+  of which one worked.
