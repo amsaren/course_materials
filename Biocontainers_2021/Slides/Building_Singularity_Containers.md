@@ -79,6 +79,7 @@ comfortable working with.
 
 # Header example 1
 - Example using "library" bootstrap agent and an image from Sylabs Container Library:
+
   ```
   Bootstrap: library
   From: debian:7
@@ -86,6 +87,7 @@ comfortable working with.
 
 # Header example 2
 - Example using "docker" bootstrap agent and an image from DockerHub:
+
   ```
   Bootstrap: docker
   From: ubuntu:20.04
@@ -93,6 +95,7 @@ comfortable working with.
 
 # Header example 3
 - Example using "yum" bootsratp agent and distrubution files from CentOs site:
+
   ```
   Bootstrap: yum
   OSVersion: 7
@@ -115,7 +118,8 @@ comfortable working with.
 
 # %files
 - Can be used to add files from the host system to the container
-- Syntax is: /path/in/host /path/in/container
+- Syntax is: `/path/in/host /path/in/container`
+
   ```
   %files
     myfile /app/data/myfile
@@ -124,16 +128,18 @@ comfortable working with.
 # %environment
 - Can be used to set any environment variables, e.g `$PATH`
 - Will be stored in file `/environment` inside the container
+
   ```
   %environment
     export PATH=/app/bin:$PATH
   ```
 
 # %post
-- Any commands to be run `in the container` after base container is up and running
+- Any commands to be run `in the container` after base container is running
 - Typically includes any installation commands
   - Note that base images typically don't include any programming languages, compilers etc, 
   so start by installing what you need.
+
   ```
   %post
     apt install python
@@ -144,11 +150,11 @@ comfortable working with.
 - Defines the runscript
 - Will be stored in file `/singularity` inside the container
 - Executed when container run with:
-   ```
+  ```
   singularity run myprog.sif
   ```
   or
-   ```
+ ```
   ./myprog.sif
   ```
 
@@ -158,7 +164,7 @@ comfortable working with.
   ```
   singularity start instance example.sif
   ```  
-- Mainly used for containers taht run services etc. Not that relevant on HPC environment
+- Mainly used for containers that run services etc. Not that relevant on HPC environment
 
 # %test
 - Runs at the very end of the build process to validate the container using a method of your choice
@@ -169,27 +175,29 @@ comfortable working with.
 
 # %labels
 - Can be used to add metadata, e.g. contact information
-- Can be seen with:
-   ```
-  singularity inspect --labels example.sif
-  ```
+  
   ```
   %labels
     Maintainer my.address@example.net
+
+- Can be seen with:
   ```
+  singularity inspect --labels example.sif
+  ```  ```
 
 # %help
 - Add usage instructions etc
-- Can be seen with:
-  ```
-  singularity run-help example.sif
-  ```
+
   ```
   %help
     Usage:
     singularity exec myprog.sif myprog --help
   ```
-
+- Can be seen with:
+  ```
+  singularity run-help example.sif
+  ```
+  
 # Example definition file
 ```
 Bootstrap: docker
