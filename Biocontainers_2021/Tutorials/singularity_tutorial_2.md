@@ -5,6 +5,12 @@ title: Tutorial - Singularity introduction continued
 
 # Singularity tutorial part 2
 
+‼️ Please complete Singularity turorial part1 before starting this tutorial. Some
+commands on this tutorial will assume you have done some previous steps (loaded
+the container image, set up some directories, etc) and will not worl as-is if
+you start from here.
+
+
 ## Using files
 💬 Singularity containers have their own internal file system that is separate from the host file system. 
 - The internal file system is always read-only when the container is run with normal user rights.
