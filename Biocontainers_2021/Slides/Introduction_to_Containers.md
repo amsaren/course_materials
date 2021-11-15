@@ -98,13 +98,13 @@ Unported License, [http://creativecommons.org/licenses/by-sa/4.0/](http://creati
 - Check the developer documentation
 - Check container help
   ```
-  singularity run-help mycontainer.sif
+  singularity run-help image.sif
   ```
 
-    - Only available if added when conatiner was created
+    - Only available if added when container was created
 - Try running `find` inside the container to find file paths
   ```
-  singularity exec example.sif find / -type f -name my_app.py 2>/dev/null
+  singularity exec image.sif find / -type f -name my_app.py 2>/dev/null
   ```
   - Requires that `find` is available in the container
 
