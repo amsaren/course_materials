@@ -34,26 +34,31 @@ Unported License, [http://creativecommons.org/licenses/by-sa/4.0/](http://creati
 - Containers can be run jus as any other software
   - Batch job scripts same for containerized and non-containerized sofware
 - When running as a batch job, it is best to use `singularity exec`
-  - Depending on the runscript `singularity run` can cause problems, i.e. 
-  variables not inherited, etc
+  - Depending on the runscript `singularity run` can cause complications, i.e. 
+  variables not inherited as expected, etc
 - If not using `singularity_wrapper`, remember to bind all necessary directories
 
 # Singularity_wrapper 1/2
 - `singularity_wrapper` takes care of most common binds
   - Binds: /users, /projappl, /scratch, /appl/data
-  - Binds `$TMPDIR`if set and directory exists
+  - Binds `$TMPDIR` if set and directory exists
   - Binds `$LOCAL_SCRATCH` if set.
 
 # Singularity_wrapper 1/2
 - Uses `$SING_IMAGE` as image file if set
-  - Some modules set `$SING_IMAGE`. If you have problems do `module purge` or `unset SING_IMAGE`
+  - Some modules set `$SING_IMAGE`. If you have problems, do `module purge` or `unset SING_IMAGE`
 - Any other options can be set by setting `$SING_FLAGS`
   - Any additional `--bind` statements
   - Add `--nv` to use host CUDA
 
 # Special resources: GPU
 - To Use GPU:
-  - Reserve it in the batch job script: `--gres=gpu:v100:<number_of_gpus_per_node>`
+  - Reserve it in the batch job script:
+    
+    ```
+    --gres=gpu:v100:<number_of_gpus_per_node>
+    ```
+
   - For some containers you need to add `--nv`
     - Allows container to use host driver stack, CUDA, etc
     - Some containers include CUDA etc, and don't need `--nv`
@@ -61,8 +66,13 @@ Unported License, [http://creativecommons.org/licenses/by-sa/4.0/](http://creati
 
 # Special resources: NVMe
 - To use fast local NVMe disk: 
-  - Reserve it in the batch job script: `#SBATCH --gres=nvme:<local_storage_space_per_node>` 
-  - If using `singularity_wrapper` `$LOCAL_SCRATCH` is bound automatically. 
+  - Reserve it in the batch job script:
+  
+    ```
+    #SBATCH --gres=nvme:<local_storage_space_per_node>
+    ```
+
+  - If using `singularity_wrapper`, `$LOCAL_SCRATCH` is bound automatically. 
   - If not, it has to be bound, e.g. `--bind $LOCAL_SCRATCH:$LOCAL_SCRATCH`
 
 # SquashFS
@@ -88,6 +98,7 @@ Unported License, [http://creativecommons.org/licenses/by-sa/4.0/](http://creati
 #SBATCH --ntasks=1
 #SBATCH --mem-per-cpu=4000
 
-srun myprog <options>
+export SING_IMAGE=/scratch/project_12345/image.sif
+export SING_FLAGS="--bind /scratch/project_12345/my_data:/data
+singularity_wrapper exec myprog -i /data/input -o output
  ```
- 
