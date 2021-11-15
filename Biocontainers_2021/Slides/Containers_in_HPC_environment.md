@@ -35,24 +35,28 @@ Unported License, [http://creativecommons.org/licenses/by-sa/4.0/](http://creati
   - Batch job scripts same for containerized and non-containerized sofware
 - When running as a batch job, it is best to use `singularity exec`
   - Depending on the runscript `singularity run` can cause problems, i.e. 
-  environment not inherited correctly, etc
+  variables not inherited, etc
 - If not using `singularity_wrapper`, remember to bind all necessary directories
 
-# Singularity_wrapper
+# Singularity_wrapper 1/2
 - `singularity_wrapper` takes care of most common binds
   - Binds: /users, /projappl, /scratch, /appl/data
   - Binds `$TMPDIR`if set and directory exists
   - Binds `$LOCAL_SCRATCH` if set.
+
+# Singularity_wrapper 1/2
 - Uses `$SING_IMAGE` as image file if set
   - Some modules set `$SING_IMAGE`. If you have problems do `module purge` or `unset SING_IMAGE`
 - Any other options can be set by setting `$SING_FLAGS`
+  - Any additional `--bind` statements
+  - Add `--nv` to use host CUDA
 
 # Special resources: GPU
 - To Use GPU:
   - Reserve it in the batch job script: `--gres=gpu:v100:<number_of_gpus_per_node>`
   - For some containers you need to add `--nv`
-    - Allows container to use host driver stack, cuda, etc
-    - Some containers include cuda etc, and don't nee `--nv`
+    - Allows container to use host driver stack, CUDA, etc
+    - Some containers include CUDA etc, and don't need `--nv`
     - In case of CSC installed software, check the Docs
 
 # Special resources: NVMe
@@ -66,4 +70,24 @@ Unported License, [http://creativecommons.org/licenses/by-sa/4.0/](http://creati
 - When using Singularity containerised tools you can use SquashFS to package files
   - Single file on Host filesystem
   - Can be mounted as a directory inside the container
+  
+  ```
+  mksquashfs my_dataset my_dataset.sqfs
+  singularity exec --bind my_dataset.sqfs:/data:image-src=/ image.sif myprog
+  ```
+
 - See instructions in [Docs](https://docs.csc.fi/computing/containers/run-existing/#mounting-datasets-with-squashfs)
+
+# Example batch job script
+ ```
+#!/bin/bash
+#SBATCH --job-name=example
+#SBATCH --account=<project>
+#SBATCH --partition=small
+#SBATCH --time=02:00:00
+#SBATCH --ntasks=1
+#SBATCH --mem-per-cpu=4000
+
+srun myprog <options>
+ ```
+ 
