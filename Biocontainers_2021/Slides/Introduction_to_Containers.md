@@ -79,13 +79,35 @@ Unported License, [http://creativecommons.org/licenses/by-sa/4.0/](http://creati
 
 # Running Singularity containers: Basic syntax
 - Execute a command in the container
-  - `singularity exec [exec options...] <container> <command>`
+  ```
+  singularity exec [exec options...] <container> <command>
+  ```
+
 - Run the default action (runscript) of the container
   - Defined when the container is built
-  - `singularity run [run options...] <container>`
-- Open a shell in the container
-  - `singularity shell [shell options...] <container>`
+  ```
+  singularity run [run options...] <container>
+  ```
 
+- Open a shell in the container
+  ```
+  singularity shell [shell options...] <container>
+  ```
+
+# Getting help
+- Check the developer documentation
+- Check container help
+  ```
+  singularity run-help mycontainer.sif
+  ```
+
+    - Only available if added when conatiner was created
+- Try running `find` inside the container to find file paths
+  ```
+  singularity exec example.sif find / -type f -name my_app.py 2>/dev/null
+  ```
+  - Requires that `find` is available in the container
+  
 # File system
 - Containers have their own, internal file system
   - The internal FS is always read-only when run with user level rights 
@@ -105,15 +127,26 @@ setting in host `$SINGULARITYENV_variablename`.
 
 # singularity_wrapper
 - Running containers with `singularity_wrapper` takes care of most common `--bind` commands
-  - `singularity_wrapper exec image.sif myprog <options>`
+  ```
+  singularity_wrapper exec image.sif myprog <options>
+  ```
+
 - If environment variable `$SING_IMAGE` is set with the path to the image, even image file can be omitted
-  - `singularity_wrapper exec myprog <options>`
+  ```
+  singularity_wrapper exec myprog <options>
+  ```
 
 # Using Docker containers with Singularity
 - You can build a Singularity container from a Docker container with normal user rights:
-  - `singularity build <image> docker://<address>:<tag>`
+  ```
+  singularity build <image> docker://<address>:<tag>
+  ```
+
 - For example:
-  - `singularity build pytorch_19.10-py3.sif docker://nvcr.io/nvidia/pytorch:19.10-py3`
+  ```
+  singularity build pytorch_19.10-py3.sif docker://nvcr.io/nvidia/pytorch:19.10-py3
+  ```
+
 - Documentation in Docs:
   - [Running Singularity containers](https://docs.csc.fi/computing/containers/run-existing/)
   - [Creating Singularity containers](https://docs.csc.fi/computing/containers/creating/)
@@ -132,5 +165,3 @@ otherwise problematic:
   - Conda: 27464 files, total size  1,1 GB 
   - Singularity: 1 file, total size 339 MB
 - Containers are not the solution for everything, but they do have their uses…
-
-
