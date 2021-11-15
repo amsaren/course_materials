@@ -51,7 +51,7 @@ Unported License, [http://creativecommons.org/licenses/by-sa/4.0/](http://creati
     ```
     module purge
     ```
-    
+
     or
 
     ```
@@ -105,21 +105,22 @@ Unported License, [http://creativecommons.org/licenses/by-sa/4.0/](http://creati
  ```
 #!/bin/bash
 #SBATCH --job-name=example
-#SBATCH --account=<project>
+#SBATCH --account=project_12345
 #SBATCH --partition=small
 #SBATCH --time=02:00:00
 #SBATCH --ntasks=1
 #SBATCH --mem-per-cpu=4000
 
 export SING_IMAGE=/scratch/project_12345/image.sif
-export SING_FLAGS="--bind /scratch/project_12345/my_data:/data
-singularity_wrapper exec myprog -i /data/input -o output
+export SING_FLAGS="--bind /scratch/project_12345/my_reference:/reference $SING_FLAGS"
+singularity_wrapper exec myprog -i input -o output
  ```
 
 # Some recurring problems 1/3
 - Conflicts with host system
   - Typical causes include `$PYTHONPATH` or `$PERL5LIB` set on host, etc.
     - Usually due to other modules being loaded or changes to `.bashrc`
+    - Inherited by the container, but interpreted as paths inide the container
   - Adding option `--cleanenv` prevents host environment variables from being inherited
 
 # Some recurring problems 2/3
@@ -130,7 +131,7 @@ singularity_wrapper exec myprog -i /data/input -o output
    ```
    export LC_ALL=C
    ``` 
-- Should be solved when building the container, but not an easy option when using a ready container.
+- Should be solved when building the container, but not an easy option when using a ready container
 
 # Some recurring problems 3/3
 - Graphics/X11 related problems
