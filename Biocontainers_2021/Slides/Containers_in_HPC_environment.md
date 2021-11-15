@@ -46,7 +46,18 @@ Unported License, [http://creativecommons.org/licenses/by-sa/4.0/](http://creati
 
 # Singularity_wrapper 1/2
 - Uses `$SING_IMAGE` as path to image file if set
-  - Some modules set `$SING_IMAGE`. If you have problems, do `module purge` or `unset SING_IMAGE`
+  - Some modules set `$SING_IMAGE`. If you have problems, do 
+    
+    ```
+    module purge
+    ```
+    
+    or
+
+    ```
+    unset SING_IMAGE
+    ```
+
 - Any other options can be set by setting `$SING_FLAGS`
   - Any additional `--bind` statements
   - Add `--nv` to use host CUDA
@@ -104,7 +115,7 @@ export SING_IMAGE=/scratch/project_12345/image.sif
 export SING_FLAGS="--bind /scratch/project_12345/my_data:/data
 singularity_wrapper exec myprog -i /data/input -o output
  ```
- 
+
 # Some recurring problems 1/3
 - Conflicts with host system
   - Typical causes include `$PYTHONPATH` or `$PERL5LIB` set on host, etc.
