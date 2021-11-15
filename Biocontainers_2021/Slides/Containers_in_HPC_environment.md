@@ -45,11 +45,12 @@ Unported License, [http://creativecommons.org/licenses/by-sa/4.0/](http://creati
   - Binds `$LOCAL_SCRATCH` if set.
 
 # Singularity_wrapper 1/2
-- Uses `$SING_IMAGE` as image file if set
+- Uses `$SING_IMAGE` as path to image file if set
   - Some modules set `$SING_IMAGE`. If you have problems, do `module purge` or `unset SING_IMAGE`
 - Any other options can be set by setting `$SING_FLAGS`
   - Any additional `--bind` statements
   - Add `--nv` to use host CUDA
+  - Adding `--cleanev` if necessary
 
 # Special resources: GPU
 - To Use GPU:
@@ -89,6 +90,7 @@ Unported License, [http://creativecommons.org/licenses/by-sa/4.0/](http://creati
 - See instructions in [Docs](https://docs.csc.fi/computing/containers/run-existing/#mounting-datasets-with-squashfs)
 
 # Example batch job script
+
  ```
 #!/bin/bash
 #SBATCH --job-name=example
@@ -102,3 +104,30 @@ export SING_IMAGE=/scratch/project_12345/image.sif
 export SING_FLAGS="--bind /scratch/project_12345/my_data:/data
 singularity_wrapper exec myprog -i /data/input -o output
  ```
+ 
+# Some recurring problems 1/3
+- Conflicts with host system
+  - Typical causes include `$PYTHONPATH` or `$PERL5LIB` set on host, etc.
+    - Usually due to other modules being loaded or changes to `.bashrc`
+  - Adding option `--cleanenv` prevents host environment variables from being inherited
+
+# Some recurring problems 2/3
+- Locale related problems
+  - Try `--cleanenv`
+  - Try setting locale to "C" before running the container
+  
+   ```
+   export LC_ALL=C
+   ``` 
+- Should be solved when building the container, but not an easy option when using a ready container.
+
+# Some recurring problems 3/3
+- Graphics/X11 related problems
+  - Seems to happen mainly with Python
+  - If you get X11 related error message, try unsetting DISPLAY
+  
+    ```
+    unset DISPLAY
+    ```
+
+
