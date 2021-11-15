@@ -21,7 +21,7 @@ Unported License, [http://creativecommons.org/licenses/by-sa/4.0/](http://creati
   - May cause some changes to usage
   - See instructions for each software for details
 - Containers provide an easy way for you to install software
-  - Single command installation if a suitable Docker or Singularity container exists
+  - Single command installation if a suitable Docker or Singularity container available
 
 # Containers
 - Containers are a way to package software with its dependencies (libraries, etc)
@@ -43,7 +43,7 @@ Unported License, [http://creativecommons.org/licenses/by-sa/4.0/](http://creati
   - All dependencies included, so more portable
   - Normal user rights enough when using an existing container
 - Root access on build system is enough
-  - Root access, package managers (yum, apt, etc) can be utilized  even
+  - Root access, package managers (`yum`, `apt`, etc) can be utilized  even
   when not available in the target system.
   - Makes installing libraries etc. easier
 
@@ -107,7 +107,7 @@ Unported License, [http://creativecommons.org/licenses/by-sa/4.0/](http://creati
   singularity exec example.sif find / -type f -name my_app.py 2>/dev/null
   ```
   - Requires that `find` is available in the container
-  
+
 # File system
 - Containers have their own, internal file system
   - The internal FS is always read-only when run with user level rights 
