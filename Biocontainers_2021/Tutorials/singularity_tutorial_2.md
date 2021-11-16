@@ -156,30 +156,30 @@ run one such application.
 
 2. Prepare a batch job script as above. Copy the following contents into the file and change "project_xxxx" to the correct project name:
     ```bash
-   #!/bin/bash
-   #SBATCH --job-name=test          
-   #SBATCH --account=project_xxxx   
-   #SBATCH --partition=test 
-   #SBATCH --time=00:10:00
-   #SBATCH --mem=1G 
-   #SBATCH --ntasks=1 
-   #SBATCH --cpus-per-task=1
+    #!/bin/bash
+    #SBATCH --job-name=test          
+    #SBATCH --account=project_xxxx   
+    #SBATCH --partition=test 
+    #SBATCH --time=00:10:00
+    #SBATCH --mem=1G 
+    #SBATCH --ntasks=1 
+    #SBATCH --cpus-per-task=1
 
-   # Load the software module
-   module load cutadapt/3.4
+    # Load the software module
+    module load cutadapt/3.4
 
-   # The module sets $SING_IMAGE, so we can omit image file in command
-   singularity_wrapper exec cutadapt \
-  -a ^GTGCCAGCMGCCGCGGTAA...ATTAGAWACCCBDGTAGTCC \
-  -A ^GGACTACHVGGGTWTCTAAT...TTACCGCGGCKGCTGGCAC \
-  -m 215 \
-   -M 285 \
-  --discard-untrimmed \
-  -o B1_sub_R1_trimmed.fq \
-  -p B1_sub_R2_trimmed.fq \
-  B1_sub_R1.fq B1_sub_R2.fq
+    # The module sets $SING_IMAGE, so we can omit image file in command
+    singularity_wrapper exec cutadapt \
+    -a ^GTGCCAGCMGCCGCGGTAA...ATTAGAWACCCBDGTAGTCC \
+    -A ^GGACTACHVGGGTWTCTAAT...TTACCGCGGCKGCTGGCAC \
+    -m 215 \
+    -M 285 \
+    --discard-untrimmed \
+    -o B1_sub_R1_trimmed.fq \
+    -p B1_sub_R2_trimmed.fq \
+    B1_sub_R1.fq B1_sub_R2.fq
 
-  ```
+    ```
 
 3. Submit the job to the queue with:
     ```bash
