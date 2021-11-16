@@ -149,20 +149,26 @@ Some software available in CSC has bee installed as containers. In this example 
 run one such application.
 
 1. Download some test data
-  ```bash
-  wget ...
-  tar xf ...
-  ```
+    ```bash
+    wget https://a3s.fi/containers-workflows/data.tar.gz
+    tar xf data.tar.gz
+    ```
+  This should get you two FASTQ files: `B1_sub_R1.fq` and `B1_sub_R2.fq`
 
-2. Prepare a batch job script as above. Copy the following contents into the file and change "project_xxxx" to the correct project name:
+2. Create a batch job script called `cutadapt.sh`: 
+   ```bash
+   nano cutadapt.sh
+   ```
+
+3. Copy the following contents into the file and change "project_xxxx" to the correct project name:
     ```bash
     #!/bin/bash
-    #SBATCH --job-name=test          
-    #SBATCH --account=project_xxxx   
-    #SBATCH --partition=test 
+    #SBATCH --job-name=test
+    #SBATCH --account=project_xxxx
+    #SBATCH --partition=test
     #SBATCH --time=00:10:00
-    #SBATCH --mem=1G 
-    #SBATCH --ntasks=1 
+    #SBATCH --mem=1G
+    #SBATCH --ntasks=1
     #SBATCH --cpus-per-task=1
 
     # Load the software module
@@ -180,15 +186,22 @@ run one such application.
     B1_sub_R1.fq B1_sub_R2.fq
 
     ```
+  💬 Note that in the above example the command line is quite long, so we have used escape charecter "\" to escape (i.e. ignore)
+  new line characters. From the computer's point of view the whole singularity_wrapper command is just a single line.
 
-3. Submit the job to the queue with:
+  💬 This way of splitting the command can improve readability and make it easier to edit parameters, but one has to be careful with the 
+  notation, or some of the command may be omitted. Make sure "\" precedes the newline directly. If there is a e.g. a space between
+  the "\" and the newline, the space gets escaped, not the newline, and the line gets cut.
+
+4. Submit the job to the queue with:
     ```bash
-   sbatch test.sh
+   sbatch cutadapt.sh
     ```
-4. In this case the module also includes a wrapper that allows us to run the program with just `cutadapt`.
-Modify the batch job so that you omit `singularity_wrapper exec`and re-submit. Does it still work?
+5. In this case the module also includes a wrapper script that allows us to run the program with just `cutadapt`.
+Modify the batch job script so that you change `singularity_wrapper exec cutadapt` to `cutadapt` and re-submit. 
+Does it still work?
 
-5. You can take a look at the cutadapt wrapper script to see how it's done.
+6. You can take a look at the cutadapt wrapper script to see how it's done.
 
     First find out the path to teh script:
     ```bash
