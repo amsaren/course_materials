@@ -153,7 +153,7 @@ run one such application.
     wget https://a3s.fi/containers-workflows/data.tar.gz
     tar xf data.tar.gz
     ```
-  This should get you two FASTQ files: `B1_sub_R1.fq` and `B1_sub_R2.fq`
+    This should get you two FASTQ files: `B1_sub_R1.fq` and `B1_sub_R2.fq`
 
 2. Create a batch job script called `cutadapt.sh`: 
    ```bash
@@ -186,19 +186,19 @@ run one such application.
     B1_sub_R1.fq B1_sub_R2.fq
 
     ```
-  💬 Note that in the above example the command line is quite long, so we have used escape charecter "\" to escape (i.e. ignore)
-  new line characters. From the computer's point of view the whole singularity_wrapper command is just a single line.
+    💬 Note that in the above example the command line is quite long, so we have used escape charecter "\" to escape (i.e. ignore)
+    new line characters. From the computer's point of view the whole singularity_wrapper command is just a single line.
 
-  💬 This way of splitting the command can improve readability and make it easier to edit parameters, but one has to be careful with the 
-  notation, or some of the command may be omitted. Make sure "\" precedes the newline directly. If there is a e.g. a space between
-  the "\" and the newline, the space gets escaped, not the newline, and the line gets cut.
+    💬 This way of splitting the command can improve readability and make it easier to edit parameters, but one has to be careful with the 
+    notation, or some of the command may be omitted. Make sure "\" precedes the newline directly. If there is a e.g. a space between
+    the "\" and the newline, the space gets escaped, not the newline, and the line gets cut.
 
 4. Submit the job to the queue with:
     ```bash
    sbatch cutadapt.sh
     ```
 5. In this case the module also includes a wrapper script that allows us to run the program with just `cutadapt`.
-Modify the batch job script so that you change `singularity_wrapper exec cutadapt` to `cutadapt` and re-submit. 
+ Modify the batch job script so that you change `singularity_wrapper exec cutadapt` to `cutadapt` and re-submit. 
 Does it still work?
 
 6. You can take a look at the cutadapt wrapper script to see how it's done.
