@@ -143,6 +143,61 @@ if you plan to use it, to make sure correct image is used.
     ```bash
    sbatch test.sh
     ```
+## Using a containerized application available as a module
+
+Some software available in CSC has bee installed as containers. In this example we will
+run one such application.
+
+1. Download some test data
+  ```bash
+  wget ...
+  tar xf ...
+  ```
+
+2. Prepare a batch job script as above. Copy the following contents into the file and change "project_xxxx" to the correct project name:
+    ```bash
+   #!/bin/bash
+   #SBATCH --job-name=test          
+   #SBATCH --account=project_xxxx   
+   #SBATCH --partition=test 
+   #SBATCH --time=00:10:00
+   #SBATCH --mem=1G 
+   #SBATCH --ntasks=1 
+   #SBATCH --cpus-per-task=1
+
+   # Load the software module
+   module load cutadapt/3.4
+
+   # The module sets $SING_IMAGE, so we can omit image file in command
+   singularity_wrapper exec cutadapt \
+  -a ^GTGCCAGCMGCCGCGGTAA...ATTAGAWACCCBDGTAGTCC \
+  -A ^GGACTACHVGGGTWTCTAAT...TTACCGCGGCKGCTGGCAC \
+  -m 215 \
+   -M 285 \
+  --discard-untrimmed \
+  -o B1_sub_R1_trimmed.fq \
+  -p B1_sub_R2_trimmed.fq \
+  B1_sub_R1.fq B1_sub_R2.fq
+
+  ```
+
+3. Submit the job to the queue with:
+    ```bash
+   sbatch test.sh
+    ```
+4. In this case the module also includes a wrapper that allows us to run the program with just `cutadapt`.
+Modify the batch job so that you omit `singularity_wrapper exec`and re-submit. Does it still work?
+
+5. You can take a look at the cutadapt wrapper script to see how it's done.
+
+    First find out the path to teh script:
+    ```bash
+    which cutadapt
+     ```
+    You can then take a look at it:
+    ```bash
+    less /appl/soft/bio/cutadapt/bin/cutadapt
+    ```
 
 💡 For more information on batch jobs, please see [CSC Docs pages](https://docs.csc.fi/computing/running/getting-started/).
 
