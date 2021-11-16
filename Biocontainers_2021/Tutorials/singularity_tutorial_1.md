@@ -75,6 +75,18 @@ sinteractive --account project_xxxx   # Change the xxxx for the project number
     exit
     ```
 
+### Getting help
+
+You can check if the creator of the container has included any help on the usage:
+```bash
+singularity run-help tutorial.sif
+``` 
+
+Adding this help is, however, optional, and in many containers it is missing. In those case yoy could 
+check e.g. the developers web site for details.
+
+For software installed by CSC, check [Docs CSC](https://docs.csc.fi/apps/alpha/).
+
 ## More information
 
 💬 This tutorial is meant as a brief introduction to get you started.
