@@ -203,7 +203,7 @@ Does it still work?
 
 6. You can take a look at the cutadapt wrapper script to see how it's done.
 
-    First find out the path to teh script:
+    First find out the path to the script:
     ```bash
     which cutadapt
      ```
