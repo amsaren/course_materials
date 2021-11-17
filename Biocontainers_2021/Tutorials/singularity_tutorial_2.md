@@ -129,16 +129,19 @@ if you plan to use it, to make sure correct image is used.
 2. Copy the following contents into the file and change "project_xxxx" to the correct project name:
     ```bash
    #!/bin/bash
-   #SBATCH --job-name=test           # Name of the job visible in the queue.
-   #SBATCH --account=project_xxxx    # Choose the billing project. Has to be defined!
-   #SBATCH --partition=test          # Job queues: test, interactive, small, large, longrun, hugemem, hugemem_longrun
-   #SBATCH --time=00:01:00           # Maximum duration of the job. Max: depends of the partition. 
-   #SBATCH --mem=1G                  # How much RAM is reserved for job per node.
-   #SBATCH --ntasks=1                # Number of tasks. Max: depends on partition.
-   #SBATCH --cpus-per-task=1         # How many processors work on one task. Max: Number of CPUs per node.
+   #SBATCH --job-name=test
+   #SBATCH --account=project_xxxx
+   #SBATCH --partition=test
+   #SBATCH --time=00:01:00
+   #SBATCH --mem=1G
+   #SBATCH --ntasks=1
+   #SBATCH --cpus-per-task=1
 
    singularity exec tutorial.sif hello_world
     ```
+    
+    💬 In nano you can use `ctrl + o` to save and `ctrl + x` to exit.
+
 3. Submit the job to the queue with:
     ```bash
    sbatch test.sh
