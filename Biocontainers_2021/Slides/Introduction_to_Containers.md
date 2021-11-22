@@ -59,8 +59,6 @@ Unported License, [http://creativecommons.org/licenses/by-sa/4.0/](http://creati
   libraries (Numpy etc) can lead to differences in behavior  
 - Sharing with collaborators easy (single file)
 
-# Docker .{title}
-
 # Docker in a nutshell
 - Probably the most popular container engine
   - Large selection of software available as Docker containers
@@ -84,8 +82,6 @@ Unported License, [http://creativecommons.org/licenses/by-sa/4.0/](http://creati
   ```
   - Will pull the container automatically if local image not available
 
-
-# Singularity .{title}
 
 # Singularity in a nutshell
 - Containers can be run with user level rights
