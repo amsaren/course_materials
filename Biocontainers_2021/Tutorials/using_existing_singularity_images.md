@@ -1,15 +1,18 @@
 ---
-topic: singularity
-title: Tutorial - Singularity introduction continued
+topic: bioapplications
+title: Tutorial - Using existing images
 ---
 
-# Singularity tutorial part 2
+# Using existing Singularity images
 
-‼️ Please complete Singularity turorial part1 before starting this tutorial. Some
-commands on this tutorial will assume you have done some previous steps (loaded
-the container image, set up some directories, etc) and will not worl as-is if
-you start from here.
+💬 In this tutorial we get a bit deeper with using Singularity containers. 
 
+To run these exercises you need to container image `tutorial.sif`. If you did not 
+already download it in the previous tutorial, download it now:
+
+```bash
+    wget  https://a3s.fi/saren-2001659-pub/tutorial.sif
+ ```
 
 ## Using files
 💬 Singularity containers have their own internal file system that is separate from the host file system. 
@@ -36,6 +39,7 @@ you start from here.
     singularity exec tutorial.sif ls $SCRATCH
     ```
 3. The container can not see the host directory, so you will get a "No such file or directory" error.
+
 4. Now try binding host directory `/scratch` to directory `/scratch` inside the container:
     ```bash
     singularity exec --bind $SCRATCH:/scratch tutorial.sif ls /scratch
@@ -201,7 +205,7 @@ run one such application.
    sbatch cutadapt.sh
     ```
 5. In this case the module also includes a wrapper script that allows us to run the program with just `cutadapt`.
- Modify the batch job script so that you change `singularity_wrapper exec cutadapt` to `cutadapt` and re-submit. 
+Modify the batch job script so that you change `singularity_wrapper exec cutadapt` to `cutadapt` and re-submit. 
 Does it still work?
 
 6. You can take a look at the cutadapt wrapper script to see how it's done.
@@ -210,7 +214,7 @@ Does it still work?
     ```bash
     which cutadapt
      ```
-    You can then take a look at it:
+    You can then take a look at it using the path:
     ```bash
     less /appl/soft/bio/cutadapt/bin/cutadapt
     ```

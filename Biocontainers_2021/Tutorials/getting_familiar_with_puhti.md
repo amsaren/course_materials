@@ -1,5 +1,5 @@
 ---
-topic: Batch jobs
+topic: containers
 title: Tutorial - Getting familiar with Puhti
 ---
 # Getting familiar with Puhti
