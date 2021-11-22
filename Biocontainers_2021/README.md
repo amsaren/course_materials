@@ -1,3 +1,4 @@
 # Materials for course Containers and Workflows in Bioinformatics
 
-These are draft versions. Final material can be found at:
+These are WIP versions. Final material can be found at:
+[Containers and Workflows in Bioinformatics](https://yetulaxman.github.io/containers-workflows/)
