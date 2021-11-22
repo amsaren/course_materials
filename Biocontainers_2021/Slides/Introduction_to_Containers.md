@@ -3,7 +3,7 @@ theme: csc-2019
 lang: en
 ---
 
-# Introduction to Singularity containers {.title}
+# Introduction to containers {.title}
 
 <div class="column">
 ![](https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-sa.png)
@@ -59,12 +59,40 @@ Unported License, [http://creativecommons.org/licenses/by-sa/4.0/](http://creati
   libraries (Numpy etc) can lead to differences in behavior  
 - Sharing with collaborators easy (single file)
 
+# Docker .{title}
+
+# Docker in a nutshell
+- Probably the most popular container engine
+  - Large selection of software available as Docker containers
+- Requires root access to run
+  - Not suited for HPC environments
+- Containers can be writable at run time
+  - Can cause problems when trying to run with Singularity
+
+# Docker basic usage
+- Pull a container from registry
+
+  ```
+  docker pull <container>
+  ```
+
+- Run a container
+
+  ```
+  docker run [options] <container>
+  
+  ```
+  - Will pull the container automatically if local image not available
+
+
+# Singularity .{title}
+
 # Singularity in a nutshell
 - Containers can be run with user level rights
-  - But: Building new containers requires root access
+  - But: Building new containers requires root access or access to remote build service
 - Minimal performance overhead
 - Supports MPI
-  - Requires containers tailored to host system
+  - But: Requires containers tailored to host system
 - Can use host driver stack (Nvidia/cuda)
   - Add option `--nv`
 - Can import and run Docker containers
@@ -80,18 +108,18 @@ Unported License, [http://creativecommons.org/licenses/by-sa/4.0/](http://creati
 # Running Singularity containers: Basic syntax
 - Execute a command in the container
   ```
-  singularity exec [exec options...] <container> <command>
+  singularity exec [options] <container> <command>
   ```
 
 - Run the default action (runscript) of the container
   - Defined when the container is built
   ```
-  singularity run [run options...] <container>
+  singularity run [options] <container>
   ```
 
 - Open a shell in the container
   ```
-  singularity shell [shell options...] <container>
+  singularity shell [options] <container>
   ```
 
 # Getting help

@@ -130,7 +130,7 @@ data. To use them we must first load the `biokit` module.
    sbatch test.sh
     ```
 `
-4. And study the results:
+4. Study the results:
 
 - What files were created?
 
@@ -139,39 +139,3 @@ data. To use them we must first load the `biokit` module.
     infoalign cesy3_aln.fasta
     showalign cesy3_aln.fasta
     ```
-
-## Extra exercise for the fast ones: Downloading with enaDataGet
-
-This exercise should ne run using `sinteractive`. Module `biokit` needs to be loaded.
-- Check the options of enaDataGet with command:
-
-    ```text
-    enaDataGet -h
-    ```
-
-- Download a file (Pythium iwayamai  genome assembly)
-
-    ```text
-    enaDataGet AKYA02000000 -f fasta
-    gunzip AKYA02.fasta.gz 
-    ls -ltr
-    ```
-
-- study the downloaded file:
-
-    ```text
-    head -20 AKYA02.fasta
-    tail AKYA02.fasta
-    infoseq_summary  AKYA02.fasta
-    ```
-
-- Then compare the cellulose synthase 3 sequences against the genome using BLAST
-
-    ```text
-    pb tblastn -query cesy3.fasta -dbnuc AKYA02.fasta -out blast_result.txt
-    ```
-  💬 Command `pb` (Parallel BLAST) is designed for situations, where the query file includes 
-  large amount of sequences. It splits the query task into several subjobs, that can be run 
-  simultaneously using the resources of the server very effectively. Because `pb` will create and
-  run a batch job, the `pb` command itself can be run in the login node. For more information, check
-  the Docs CSC page for [BLAST](https://docs.csc.fi/apps/blast/)
