@@ -44,7 +44,7 @@ Unported License, [http://creativecommons.org/licenses/by-sa/4.0/](http://creati
   - Binds `$TMPDIR` if set and directory exists
   - Binds `$LOCAL_SCRATCH` if set.
 
-# Singularity_wrapper 1/2
+# Singularity_wrapper 2/2
 - Uses `$SING_IMAGE` as path to image file if set
   - Some modules set `$SING_IMAGE`. If you have problems, do 
     
@@ -73,7 +73,7 @@ Unported License, [http://creativecommons.org/licenses/by-sa/4.0/](http://creati
 
   - For some containers you need to add `--nv`
     - Allows container to use host driver stack, CUDA, etc
-    - Some containers include CUDA etc, and don't need `--nv`
+  - Some containers include CUDA etc, and don't need `--nv`
     - In case of CSC installed software, check the Docs
 
 # Special resources: NVMe
@@ -84,7 +84,8 @@ Unported License, [http://creativecommons.org/licenses/by-sa/4.0/](http://creati
     #SBATCH --gres=nvme:<local_storage_space_per_node>
     ```
 
-  - If using `singularity_wrapper`, `$LOCAL_SCRATCH` is bound automatically. 
+- `$LOCAL_SCRATCH` is set by the system if NVMe resources allocated for the job 
+  - If using `singularity_wrapper`, `$LOCAL_SCRATCH` is bound automatically
   - If not, it has to be bound, e.g. `--bind $LOCAL_SCRATCH:$LOCAL_SCRATCH`
 
 # SquashFS
