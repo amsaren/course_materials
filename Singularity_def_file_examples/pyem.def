@@ -1,0 +1,33 @@
+Bootstrap: docker
+From: continuumio/miniconda3
+
+%post
+  # Name for the environment
+  ENV_NAME=env
+  # These lines make sure the conda environmet is active at runtime
+  echo ". /opt/conda/etc/profile.d/conda.sh" >> $SINGULARITY_ENVIRONMENT
+  echo "conda activate $ENV_NAME" >> $SINGULARITY_ENVIRONMENT
+
+  # Activate conda base, create and activate the environmet
+  . /opt/conda/etc/profile.d/conda.sh
+  conda create -p /opt/conda/envs/$ENV_NAME
+  conda activate $ENV_NAME
+  
+  # Install Conda environment
+  conda install numpy scipy matplotlib seaborn numba pandas natsort
+  conda install -c conda-forge pyfftw healpy pathos
+
+  # Install pyem
+  git clone https://github.com/asarnow/pyem.git
+  cd pyem
+  pip install --no-dependencies .
+
+  # Create links
+  cd /usr/local/bin
+  ln -s /pyem/*.py -t .
+
+  # Cleaning up cache etc will make a smaller image file
+  conda clean --all
+
+%runscript
+    exec "$@"
