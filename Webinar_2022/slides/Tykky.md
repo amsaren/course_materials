@@ -143,8 +143,9 @@ Unported License, [http://creativecommons.org/licenses/by-sa/4.0/](http://creati
   example:
 
   ```
-  mkdir cap3
-  wrap-container -w /usr/local/bin ddocker://quay.io/biocontainers/cap3:10.2011--h779adbc_3 --prefix cap3 
+  mkdir bbmap
+  wrap-container -w /usr/local/bin docker://quay.io/biocontainers/bbmap:38.96--h5c4e2a8_1 \
+  --prefix bbmap 
   ```
 
 
