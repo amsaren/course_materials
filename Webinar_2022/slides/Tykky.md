@@ -23,7 +23,7 @@ Unported License, [http://creativecommons.org/licenses/by-sa/4.0/](http://creati
   - Singularity can run most Docker containers
 
 # Container benefits: Ease of installation
-- Easy installation of complex softwar packages
+- Easy installation of complex software packages
   - Single-command installation if a ready container exists
   - Many developers distribute their software as containers
   - Third-party created containers available for many more
@@ -46,7 +46,7 @@ Unported License, [http://creativecommons.org/licenses/by-sa/4.0/](http://creati
 - Many containers can run as-is on any system with container support
   - Same container could run in Puhti, Mahti, LUMI, your own computer...
 - Software requiring MPI will need suitable container for each system
-  - Most bioscience applications are thread-based, so this is not a problem
+  - Most bioscience applications are thread-based
 - Sofware requiring GPU more portable than MPI, but may require modifications
 
 # Container complications
@@ -93,11 +93,11 @@ Unported License, [http://creativecommons.org/licenses/by-sa/4.0/](http://creati
   
   ```
   channels:
-  - conda-forge
+    - conda-forge
   dependencies:
-  - python=3.8.8
-  - scipy
-  - nglview
+    - python=3.8.8
+    - scipy
+    - nglview
   ```
 
 # Using Tykky to install Python packages
@@ -124,11 +124,11 @@ Unported License, [http://creativecommons.org/licenses/by-sa/4.0/](http://creati
   conda-containerize update MyEnv --post-install post.txt 
   ```
   
-  post.txt:
+    post.txt:
   
-  ```
-  python setup.py install
-  ```
+    ```
+    python setup.py install
+    ```
 
 # Using Tykky to create wrapper for existing container
 - Basic command:
