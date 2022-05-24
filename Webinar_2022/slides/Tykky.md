@@ -47,12 +47,14 @@ Unported License, [http://creativecommons.org/licenses/by-sa/4.0/](http://creati
   - Same container could run in Puhti, Mahti, LUMI, your own computer...
 - Software requiring MPI will need suitable container for each system
   - Most bioscience applications are thread-based, so this is not a problem
+- Sofware requiring GPU more portable than MPI, but may require modifications
 
 # Container complications
 - Building containers from scratch can be a bit tricky
+  - Some operations require root acces on build system
 - Running containerized applications requires special commands
-- Care needed to make files visible inside the containers
-  - Using `singularity_wrapper` command takes care some of this
+- Care needed to make host system files visible inside the containers
+  - Using `singularity_wrapper` command takes care most of this
 
 # Tykky container wrapper
 - Provides an easy way to do containerised installations
@@ -102,16 +104,18 @@ Unported License, [http://creativecommons.org/licenses/by-sa/4.0/](http://creati
 - Basic command for pip -based installations:
 
   ```
-  pip-containerize new --prefix <install_dir> req.txt
+  mkdir MyEnv
+  pip-containerize new --prefix MyEnv req.txt
   ```
 
-  - `req.txt` pip requirements file
-- By default uses the Python in current `$PATH`as base
+  - `req.txt`: pip requirements file
+- By default uses the Python in current `$PATH` as base
+  - Depends on loaded modules
   - Can not be a container-based installation
   - Using option `--slim` starts with a minimal Python installation
 
 # Using Tykky to install Python packages, continued
-- For Python software that uses `python setup.py install` 
+- For Python software with no pip package available 
   - First create basic environment with `conda-containerize new`
   - Add installation command to a file, e.g. "post.txt"
   - Then use `conda-containerize update`
@@ -119,7 +123,12 @@ Unported License, [http://creativecommons.org/licenses/by-sa/4.0/](http://creati
   ```
   conda-containerize update MyEnv --post-install post.txt 
   ```
-
+  
+  post.txt:
+  
+  ```
+  python setup.py install
+  ```
 
 # Using Tykky to create wrapper for existing container
 - Basic command:
@@ -129,21 +138,17 @@ Unported License, [http://creativecommons.org/licenses/by-sa/4.0/](http://creati
   ```
 
   - `-w` the directory/directories inside the container where the executables are
-  - `container` can be a path toa conatiner image file or an URL
+  - `container` can be a path to a container image file or an URL
   
+  example:
+
+  ```
+  mkdir admixture
+  wrap-container -w /usr/local/bin docker://docker://quay.io/biocontainers/admixture:1.3.0--0 --prefix admixture 
+  ```
+
 
 # More information in Docs
 
 https://docs.csc.fi/computing/containers/tykky/
 
-
-
-```
-export PATH="<install_dir>/bin:$PATH"
-```
-
-
-
-
-```
-```
