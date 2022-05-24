@@ -46,7 +46,7 @@ Unported License, [http://creativecommons.org/licenses/by-sa/4.0/](http://creati
 - Many containers can run as-is on any system with container support
   - Same container could run in Puhti, Mahti, LUMI, your own computer...
 - Software requiring MPI will need suitable container for each system
-  - Most bioscience applications are thread-base, so this is not aproblem
+  - Most bioscience applications are thread-based, so this is not a problem
 
 # Container complications
 - Building containers from scratch can be a bit tricky
@@ -58,10 +58,12 @@ Unported License, [http://creativecommons.org/licenses/by-sa/4.0/](http://creati
 - Provides an easy way to do containerised installations
 - Creates wrappers for commands, so no special commands needed:
     Instead of e.g.
+
      ```
      singularity_wrapper exec myimage.sif myprog <options>
      ```
      just:
+    
      ```
      myprog <options>
      ```
@@ -70,17 +72,23 @@ Unported License, [http://creativecommons.org/licenses/by-sa/4.0/](http://creati
 - "Bare" Conda installations should be avoided
   - Installations can have tens of thousands of files
   - Leads to performance issues on Lustre
-- Basic command:
- ```
-  conda-containerize new --prefix <install_dir> env.yml
- ```
+- Basic command to install into folder "MyEnv":
+
+  ```
+  mkdir MyEnv
+  conda-containerize new --prefix MyEnv env.yml
+  ```
 
 # Environment file
+- Typically provided with the software distribution
 - Can be exported from an existing Conda environment
+  
   ```
   conda env export -n <target_env_name> > env.yaml 
   ```
+
 - Or written by hand
+  
   ```
   channels:
   - conda-forge
@@ -92,20 +100,34 @@ Unported License, [http://creativecommons.org/licenses/by-sa/4.0/](http://creati
 
 # Using Tykky to install Python packages
 - Basic command for pip -based installations:
+
   ```
   pip-containerize new --prefix <install_dir> req.txt
   ```
+
   - `req.txt` pip requirements file
 - By default uses the Python in current `$PATH`as base
-  - Can not be a conatiner-based installation
+  - Can not be a container-based installation
   - Using option `--slim` starts with a minimal Python installation
 
+# Using Tykky to install Python packages, continued
+- For Python software that uses `python setup.py install` 
+  - First create basic environment with `conda-containerize new`
+  - Add installation command to a file, e.g. "post.txt"
+  - Then use `conda-containerize update`
 
-# Using Tykky to create wrapper for existing conatiner
+  ```
+  conda-containerize update MyEnv --post-install post.txt 
+  ```
+
+
+# Using Tykky to create wrapper for existing container
 - Basic command:
+
   ```
   wrap-container -w </path/inside/container> <container> --prefix <install_dir> 
   ```
+
   - `-w` the directory/directories inside the container where the executables are
   - `container` can be a path toa conatiner image file or an URL
   
