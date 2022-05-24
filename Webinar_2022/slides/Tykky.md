@@ -144,7 +144,8 @@ Unported License, [http://creativecommons.org/licenses/by-sa/4.0/](http://creati
 
   ```
   mkdir admixture
-  wrap-container -w /usr/local/bin docker://docker://quay.io/biocontainers/admixture:1.3.0--0 --prefix admixture 
+  wrap-container -w /usr/local/bin docker://docker://quay.io/biocontainers/admixture:1.3.0--0 \
+  --prefix admixture 
   ```
 
 

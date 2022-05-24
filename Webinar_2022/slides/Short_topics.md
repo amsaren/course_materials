@@ -18,7 +18,7 @@ Unported License, [http://creativecommons.org/licenses/by-sa/4.0/](http://creati
 
 # Course: CSC Computing Environment
 - Self learning course
-  - https://ssl.eventilla.com/csccompenvselflearn
+  - https://ssl.eventilla.com/event/CSCCompEnvSelfLearn
 - Materials available also directly:
   - https://csc-training.github.io/csc-env-eff/
   - Tutorials written to be self-standing introductions to topics
