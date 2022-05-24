@@ -143,8 +143,8 @@ Unported License, [http://creativecommons.org/licenses/by-sa/4.0/](http://creati
   example:
 
   ```
-  mkdir admixture
-  wrap-container -w /usr/local/bin docker://quay.io/biocontainers/admixture:1.3.0--0 --prefix admixture 
+  mkdir cap3
+  wrap-container -w /usr/local/bin ddocker://quay.io/biocontainers/cap3:10.2011--h779adbc_3 --prefix cap3 
   ```
 
 
