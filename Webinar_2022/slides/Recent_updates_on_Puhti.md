@@ -3,8 +3,7 @@ theme: csc-2019
 lang: en
 ---
 
-# Easy way to install software - Tykky container wrapper {.title}
-
+# Webinar: Recent updates on Puhti for biousers {.title}
 <div class="column">
 ![](https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-sa.png)
 </div>
@@ -15,6 +14,14 @@ This work is licensed under a **Creative Commons Attribution-ShareAlike** 4.0
 Unported License, [http://creativecommons.org/licenses/by-sa/4.0/](http://creativecommons.org/licenses/by-sa/4.0/)
 </small>
 </div>
+
+# Todays topics
+- Tykky Container wrapper
+- Puhti web interface
+- Short topics
+
+
+# Easy way to install software - Tykky container wrapper {.title}
 
 # Containers in a nutshell
 - Containers are a way to package software with its dependencies (libraries, etc)
@@ -148,8 +155,35 @@ Unported License, [http://creativecommons.org/licenses/by-sa/4.0/](http://creati
   --prefix bbmap 
   ```
 
-
 # More information in Docs
 
 https://docs.csc.fi/computing/containers/tykky/
 
+# Short topics {.title}
+
+# Course: CSC Computing Environment
+- Self learning course
+  - https://ssl.eventilla.com/event/CSCCompEnvSelfLearn
+  - Aimed at beginner to intermediate users
+   - Also some advanced topics covered
+- Materials available also directly:
+  - https://csc-training.github.io/csc-env-eff/
+  - Tutorials written to be self-standing introductions to topics
+- Course is meant to complement CSC Docs pages
+
+# OS updates
+- Operating systems on CSC supercomputers will be updated to
+  Red Hat Enterprice Linux (RHEL) 8
+  - Mahti updated in May 2022 
+  - Puhti update planned for Spetember 2022
+- Software installed by CSC will be re-installed by CSC
+- Software installed by you
+  - Software installed as binaries or containers will probably be ok
+  - Software compiled by you needs to be re-compiled
+
+# Take home message {.title}
+
+# Take home message
+- Wrap Conda installations with Tykky
+- Puhti web interface easy way to run graphical applications, Jupyter notebooks, Rstudio etc
+- OS update coming on Puhti
