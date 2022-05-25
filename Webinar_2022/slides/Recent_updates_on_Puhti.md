@@ -159,6 +159,8 @@ Unported License, [http://creativecommons.org/licenses/by-sa/4.0/](http://creati
 
 https://docs.csc.fi/computing/containers/tykky/
 
+# Puhti web interface {.title}
+
 # Short topics {.title}
 
 # Course: CSC Computing Environment
@@ -186,4 +188,5 @@ https://docs.csc.fi/computing/containers/tykky/
 # Take home message
 - Wrap Conda installations with Tykky
 - Puhti web interface easy way to run graphical applications, Jupyter notebooks, Rstudio etc
+- Self learning corse: CSC Computing Environment
 - OS update coming on Puhti
