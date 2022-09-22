@@ -171,29 +171,32 @@ https://docs.csc.fi/computing/containers/tykky/
 
 # Puhti Web Interface: Available features (1/2)
 
-- Shell
-   - Available as pinned apps or on the top navbar under the *Tools* section
+- Improved the main dashboard page layout
+   - Apps available as pinned apps or on the top navbar under the *Tools* section
+- Project-specific notifications
+- Access shell on Puhti
    - Open a shell on the login node
    - Open a persistent shell on a compute node
-   - View running batch jobs
-- Files
-   - Use *Files* section  to open file browser
-   - Upload/download/create new files
+- Graphical display of Lustre usage metrics
+- Support for accelerated visualization
+
 
 # Puhti Web Interface: Available features (2/2)
+
+- Files
+   - Use *Files* section to open file browser
+   - Upload/download/create new files
 
 - Active jobs
   - Submit batch jobs through the web interface
   - View recent and running batch jobs
-  - Delete a running job will cancel the job
+  - Delete a running job
 
 - Launching an interactive app
 
   - The interactive apps can be found "My Interactive Sessions" page
-  - Desktop/Jupyter/RStudio/TensorBoard/Visual Studio Code
+  - Desktop/Jupyter/RStudio/MATLAB/TensorBoard/Visual Studio Code
 
-- Project view
-- Accelerated visualization
 
 
 # Short topics {.title}
