@@ -16,18 +16,107 @@ Unported License, [http://creativecommons.org/licenses/by-sa/4.0/](http://creati
 </div>
 
 # Todays topics
+- Puhti OS update
 - Tykky Container wrapper
 - Puhti web interface
 - Short topics
 
+# Puhti OS update
 
-# Easy way to install software - Tykky container wrapper {.title}
+# Puhti OS update
+- Puhti OS will be updated to RHEL8 on October 4.-5.
+  - Better security
+  - Better compatibility with new software
+  - May cause issues with old software
+- Will not affect your files ($HOME, /projappl, /scratch)
+
+# Login
+- General login address (puhti.csc.fi) will remain the same
+  - Individual login node names will change
+  - Only affects you if you e.g. have some script that contacts login nodes directly
+- Host keys will change, and ssh will warn you about it first time you log in
+
+# General software environment
+- Python 2 no longer supported by system
+  - Consider containers for software requiring Python 2
+- Default compiler environment will be GCC (previously intel)
+  - Intel compilers available as module
+- Default MPI will be OpenMPI (previously hpcx-mpi)
+
+# Software installed by CSC
+- All bio software available now will be available also after update
+  - Some things may still be missing, but will be added
+- In some cases older versions are not installed by default
+  - If you need a specific version, contact us at servicedek@csc.fi
+- If something is missing or you encounter any problem, contact us
+
+# Conda usage will be deprecated
+- Conda has caused recurring problems
+  - Installations generate huge amount of files
+  - Causes high load on Lustre file system
+  - Has caused problems and system-wide slow-downs
+- https://docs.csc.fi/support/deprecate-conda/
+
+# Replacing Conda
+- Bioconda module will no longer be available
+- CSC installed software currently accessed through bioconda will have their own modules
+- Any user installations based on bioconda module will need to be re-installed
+  - We recommend using Tykky container wrapper
+  - More on Tykky later
+
+# Example
+Old commands:
+  ```text
+    module load bioconda
+    source activate ipyrad
+  ```
+
+New:
+  ```text
+    module load ipyrad
+  ```
+
+# Container engine will be Apptainer
+- Open-source version of Apptainer
+- Old container images work as-is
+- Old commands will work just as before
+  - `singularity` and `singularity_wrapper` are links to `apptainer`and `apptainer_wrapper` respectively
+- Environment varianles now starting with `SINGULARITY_` should be changed to `APPTAINER_`
+  - Old variable names still work, but may give warnings
+
+# Software installed by you: Binaries
+- Software installed from ready binaries will work in most cases
+- If you have problems see if RHEL8 compatible binary is available for download
+- If working binary is not available, try compiling from source
+- Installation in a container also an option
+  - Especially if source code not available
+
+# Software installed by you: Compiled software
+- Most self compiled code will work, but needs to be tested
+  - Usually on/off situation: if program starts, it should run fine
+  - Common problems include linked libraries not found
+- In case of problems, try re-compiling
+- All MPI software should be re-compiled
+
+# Software installed by you: Python, Perl, R, Java
+- Python, Perl, R, Java etc applications should work
+- Available modules may have changed
+  - It is possible some previously available libraries are missing
+  - If you notice something, plese contact us at servicedesk@csc.fi
+- Container-based installations should work
+
+# Test systems  
+- Test system available:
+  - https://csc-guide-preview.rahtiapp.fi/origin/puhti-rhel8/support/tutorials/puhti-rhel8-test/
+- If you encounter any problems, contact us at servicedesk@csc.fi
+
+# Easy way to install software - Tykky container wrapper
 
 # Containers in a nutshell
 - Containers are a way to package software with its dependencies (libraries, etc)
-- Popular container engines include Docker, Singularity, Shifter
-- Singularity is the most popular in HPC environments
-  - Singularity can run most Docker containers
+- Popular container engines include Docker, Apptainer/Singularity, Shifter
+- Apptainer is the most popular in HPC environments
+  - Apptainer can run most Docker containers
 
 # Container benefits: Ease of installation
 - Easy installation of complex software packages
@@ -61,25 +150,26 @@ Unported License, [http://creativecommons.org/licenses/by-sa/4.0/](http://creati
   - Some operations require root acces on build system
 - Running containerized applications requires special commands
 - Care needed to make host system files visible inside the containers
-  - Using `singularity_wrapper` command takes care most of this
+  - Using `apptainer_wrapper` command takes care most of this
 
 # Tykky container wrapper
 - Provides an easy way to do containerised installations
 - Creates wrappers for commands, so no special commands needed:
     Instead of e.g.
 
+     ```text
+     apptainer_wrapper exec myimage.sif myprog <options>
      ```
-     singularity_wrapper exec myimage.sif myprog <options>
-     ```
+     
      just:
     
-     ```
+     ```text
      myprog <options>
      ```
 
 # Using Tykky to install a Conda package
-- "Bare" Conda installations should be avoided
-  - Installations can have tens of thousands of files
+- "Bare" Conda installations are no longer allowed
+  - Installations can have tens or hundreds of thousands of files
   - Leads to performance issues on Lustre
 - Basic command to install into folder "MyEnv":
 
@@ -98,7 +188,8 @@ Unported License, [http://creativecommons.org/licenses/by-sa/4.0/](http://creati
 
 - Or written by hand
   
-  ```
+# Exanoke envirnment file:  
+  ```text
   channels:
     - conda-forge
   dependencies:
@@ -160,7 +251,7 @@ Unported License, [http://creativecommons.org/licenses/by-sa/4.0/](http://creati
 https://docs.csc.fi/computing/containers/tykky/
 
 
-# Puhti web interface {.title}
+# Puhti Web Interface {.title}
 
 
 # Puhti Web Interface: Introduction
@@ -171,10 +262,10 @@ https://docs.csc.fi/computing/containers/tykky/
 
 # Puhti Web Interface: Available features (1/2)
 
-- Improved the main dashboard page layout
-   - Apps available as pinned apps or on the top navbar under the *Tools* section
+- Improved dashboard layout
+   - Multiple pinned apps 
 - Project-specific notifications
-- Access shell on Puhti
+- Access Puhti shell on web interface
    - Open a shell on the login node
    - Open a persistent shell on a compute node
 - Graphical display of Lustre usage metrics
@@ -182,21 +273,28 @@ https://docs.csc.fi/computing/containers/tykky/
 
 
 # Puhti Web Interface: Available features (2/2)
-
-- Files
+- Manage files
    - Use *Files* section to open file browser
    - Upload/download/create new files
 
-- Active jobs
+- Monitor active jobs
   - Submit batch jobs through the web interface
   - View recent and running batch jobs
   - Delete a running job
 
-- Launching an interactive app
-
-  - The interactive apps can be found "My Interactive Sessions" page
+- Launch an interactive app
+  - The interactive apps can be found under "My Interactive Sessions" page
   - Desktop/Jupyter/RStudio/MATLAB/TensorBoard/Visual Studio Code
 
+
+# Making custom notebooks for your needs
+- Install necessary packages as container using tykky wrapper tool on Puhti
+- Create a course environment/module(s) using CSC templates
+- Access custom notebook on Puhti web interface via "Jupyter for courses" under "Interactive Sessions"
+- Useful CSC documentation:
+  - [Jupyter for course](https://docs.csc.fi/computing/webinterface/jupyter-for-courses/)
+    - [A course example](https://github.com/yetulaxman/NMRLipids#creating-a-course-environment-modules)
+  - [Tykky containerisation](https://docs.csc.fi/computing/containers/tykky/)
 
 
 # Short topics {.title}
@@ -211,20 +309,10 @@ https://docs.csc.fi/computing/containers/tykky/
   - Tutorials written to be self-standing introductions to topics
 - Course is meant to complement CSC Docs pages
 
-# OS updates
-- Operating systems on CSC supercomputers will be updated to
-  Red Hat Enterprice Linux (RHEL) 8
-  - Mahti updated in May 2022 
-  - Puhti update planned for Spetember 2022
-- Software installed by CSC will be re-installed by CSC
-- Software installed by you
-  - Software installed as binaries or containers will probably be ok
-  - Software compiled by you needs to be re-compiled
-
 # Take home message {.title}
 
 # Take home message
+- OS update coming on Puhti
 - Wrap Conda installations with Tykky
 - Puhti web interface easy way to run graphical applications, Jupyter notebooks, Rstudio etc
 - Self learning corse: CSC Computing Environment
-- OS update coming on Puhti
