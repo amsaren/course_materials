@@ -251,7 +251,7 @@ New:
 https://docs.csc.fi/computing/containers/tykky/
 
 
-# Puhti web interface {.title}
+# Puhti Web Interface {.title}
 
 
 # Puhti Web Interface: Introduction
@@ -262,10 +262,10 @@ https://docs.csc.fi/computing/containers/tykky/
 
 # Puhti Web Interface: Available features (1/2)
 
-- Improved the main dashboard page layout
-   - Apps available as pinned apps or on the top navbar under the *Tools* section
+- Improved dashboard layout
+   - Multiple pinned apps 
 - Project-specific notifications
-- Access shell on Puhti
+- Access Puhti shell on web interface
    - Open a shell on the login node
    - Open a persistent shell on a compute node
 - Graphical display of Lustre usage metrics
@@ -273,20 +273,29 @@ https://docs.csc.fi/computing/containers/tykky/
 
 
 # Puhti Web Interface: Available features (2/2)
-
-- Files
+- Manage files
    - Use *Files* section to open file browser
    - Upload/download/create new files
 
-- Active jobs
+- Monitor active jobs
   - Submit batch jobs through the web interface
   - View recent and running batch jobs
   - Delete a running job
 
-- Launching an interactive app
-
-  - The interactive apps can be found "My Interactive Sessions" page
+- Launch an interactive app
+  - The interactive apps can be found under "My Interactive Sessions" page
   - Desktop/Jupyter/RStudio/MATLAB/TensorBoard/Visual Studio Code
+
+
+# Making custom notebooks for your needs
+- Install necessary packages as container using tykky wrapper tool on Puhti
+- Create a course environment/module(s) using CSC templates
+- Access custom notebook on Puhti web interface via "Jupyter for courses" under "Interactive Sessions"
+- Useful CSC documentation:
+  - [Jupyter for course](https://docs.csc.fi/computing/webinterface/jupyter-for-courses/)
+    - [A course example](https://github.com/yetulaxman/NMRLipids#creating-a-course-environment-modules)
+  - [Tykky containerisation](https://docs.csc.fi/computing/containers/tykky/)
+
 
 # Short topics {.title}
 
