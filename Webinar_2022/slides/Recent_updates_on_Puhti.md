@@ -15,13 +15,16 @@ Unported License, [http://creativecommons.org/licenses/by-sa/4.0/](http://creati
 </small>
 </div>
 
+
 # Todays topics
 - Puhti OS update
-- Tykky Container wrapper
+- Tykky container wrapper
 - Puhti web interface
 - Short topics
 
-# Puhti OS update
+
+# Puhti OS update {.title}
+
 
 # Puhti OS update
 - Puhti OS will be updated to RHEL8 on October 4.-5.
@@ -30,11 +33,13 @@ Unported License, [http://creativecommons.org/licenses/by-sa/4.0/](http://creati
   - May cause issues with old software
 - Will not affect your files ($HOME, /projappl, /scratch)
 
+
 # Login
 - General login address (puhti.csc.fi) will remain the same
-  - Individual login node names will change
+- Individual login node names will change
   - Only affects you if you e.g. have some script that contacts login nodes directly
 - Host keys will change, and ssh will warn you about it first time you log in
+
 
 # General software environment
 - Python 2 no longer supported by system
@@ -43,12 +48,14 @@ Unported License, [http://creativecommons.org/licenses/by-sa/4.0/](http://creati
   - Intel compilers available as module
 - Default MPI will be OpenMPI (previously hpcx-mpi)
 
+
 # Software installed by CSC
 - All bio software available now will be available also after update
   - Some things may still be missing, but will be added
 - In some cases older versions are not installed by default
   - If you need a specific version, contact us at servicedek@csc.fi
 - If something is missing or you encounter any problem, contact us
+
 
 # Conda usage will be deprecated
 - Conda has caused recurring problems
@@ -57,12 +64,14 @@ Unported License, [http://creativecommons.org/licenses/by-sa/4.0/](http://creati
   - Has caused problems and system-wide slow-downs
 - https://docs.csc.fi/support/deprecate-conda/
 
+
 # Replacing Conda
 - Bioconda module will no longer be available
 - CSC installed software currently accessed through bioconda will have their own modules
 - Any user installations based on bioconda module will need to be re-installed
   - We recommend using Tykky container wrapper
   - More on Tykky later
+
 
 # Example
 Old commands:
@@ -77,19 +86,21 @@ New:
   ```
 
 # Container engine will be Apptainer
-- Open-source version of Apptainer
+- Open-source version of Singularity
 - Old container images work as-is
 - Old commands will work just as before
   - `singularity` and `singularity_wrapper` are links to `apptainer`and `apptainer_wrapper` respectively
-- Environment varianles now starting with `SINGULARITY_` should be changed to `APPTAINER_`
+- Environment variables now starting with `SINGULARITY_` should be changed to `APPTAINER_`
   - Old variable names still work, but may give warnings
+
 
 # Software installed by you: Binaries
 - Software installed from ready binaries will work in most cases
-- If you have problems see if RHEL8 compatible binary is available for download
+- If you have problems, see if RHEL8 compatible binary is available for download
 - If working binary is not available, try compiling from source
 - Installation in a container also an option
   - Especially if source code not available
+
 
 # Software installed by you: Compiled software
 - Most self compiled code will work, but needs to be tested
@@ -98,6 +109,7 @@ New:
 - In case of problems, try re-compiling
 - All MPI software should be re-compiled
 
+
 # Software installed by you: Python, Perl, R, Java
 - Python, Perl, R, Java etc applications should work
 - Available modules may have changed
@@ -105,18 +117,22 @@ New:
   - If you notice something, plese contact us at servicedesk@csc.fi
 - Container-based installations should work
 
+
 # Test systems  
 - Test system available:
   - https://csc-guide-preview.rahtiapp.fi/origin/puhti-rhel8/support/tutorials/puhti-rhel8-test/
 - If you encounter any problems, contact us at servicedesk@csc.fi
 
-# Easy way to install software - Tykky container wrapper
+
+# Easy way to install software - Tykky container wrapper {.title}
+
 
 # Containers in a nutshell
 - Containers are a way to package software with its dependencies (libraries, etc)
 - Popular container engines include Docker, Apptainer/Singularity, Shifter
 - Apptainer is the most popular in HPC environments
   - Apptainer can run most Docker containers
+
 
 # Container benefits: Ease of installation
 - Easy installation of complex software packages
@@ -126,17 +142,20 @@ New:
     - E.g. all packages in Bioconda repository also available 
     as containers 
 
+
 # Container benefits: Environment isolation
 - Containers use host system kernel, but can have their own Bins/Libs layer
   - Can be a different Linux distribution that the host
   - Can solve some incompatibilities
   - Less likely to be effected by changes in the host system
-  
+
+
 # Container benefits: Enviroment reproducibility
 - Analysis environment can be saved as a whole
   - Useful with e.g. Python, where updating underlaying 
   libraries (Numpy etc) can lead to differences in behavior  
 - Sharing with collaborators easy (single file)
+
 
 # Container benefits: Portability
 - Many containers can run as-is on any system with container support
@@ -145,6 +164,7 @@ New:
   - Most bioscience applications are thread-based
 - Sofware requiring GPU more portable than MPI, but may require modifications
 
+
 # Container complications
 - Building containers from scratch can be a bit tricky
   - Some operations require root acces on build system
@@ -152,8 +172,10 @@ New:
 - Care needed to make host system files visible inside the containers
   - Using `apptainer_wrapper` command takes care most of this
 
+
 # Tykky container wrapper
 - Provides an easy way to do containerised installations
+- Can be run with user rights
 - Creates wrappers for commands, so no special commands needed:
     Instead of e.g.
 
@@ -167,16 +189,15 @@ New:
      myprog <options>
      ```
 
+
 # Using Tykky to install a Conda package
-- "Bare" Conda installations are no longer allowed
-  - Installations can have tens or hundreds of thousands of files
-  - Leads to performance issues on Lustre
 - Basic command to install into folder "MyEnv":
 
   ```
   mkdir MyEnv
   conda-containerize new --prefix MyEnv env.yml
   ```
+
 
 # Environment file
 - Typically provided with the software distribution
@@ -187,8 +208,9 @@ New:
   ```
 
 - Or written by hand
-  
-# Exanoke envirnment file:  
+
+
+# Example environment file:  
   ```text
   channels:
     - conda-forge
@@ -197,6 +219,7 @@ New:
     - scipy
     - nglview
   ```
+
 
 # Using Tykky to install Python packages
 - Basic command for pip -based installations:
@@ -211,6 +234,7 @@ New:
   - Depends on loaded modules
   - Can not be a container-based installation
   - Using option `--slim` starts with a minimal Python installation
+
 
 # Using Tykky to install Python packages, continued
 - For Python software with no pip package available 
@@ -227,6 +251,7 @@ New:
     ```
     python setup.py install
     ```
+
 
 # Using Tykky to create wrapper for existing container
 - Basic command:
@@ -246,9 +271,11 @@ New:
   --prefix bbmap 
   ```
 
+
 # More information in Docs
 
 https://docs.csc.fi/computing/containers/tykky/
+
 
 
 # Puhti Web Interface {.title}
@@ -288,7 +315,7 @@ https://docs.csc.fi/computing/containers/tykky/
 
 
 # Making custom notebooks for your needs
-- Install necessary packages as container using tykky wrapper tool on Puhti
+- Install necessary packages as container using Tykky wrapper tool on Puhti
 - Create a course environment/module(s) using CSC templates
 - Access custom notebook on Puhti web interface via "Jupyter for courses" under "Interactive Sessions"
 - Useful CSC documentation:
@@ -303,13 +330,21 @@ https://docs.csc.fi/computing/containers/tykky/
 - Self learning course
   - https://ssl.eventilla.com/event/CSCCompEnvSelfLearn
   - Aimed at beginner to intermediate users
-   - Also some advanced topics covered
+  - Also some advanced topics covered
 - Materials available also directly:
   - https://csc-training.github.io/csc-env-eff/
   - Tutorials written to be self-standing introductions to topics
 - Course is meant to complement CSC Docs pages
 
+
+# CSC Research User Support Coffee
+- Have a cup of coffee with our customer support and discuss whatever you have in mind
+- Every Wednesday at 14:00 in Zoom
+- https://ssl.eventilla.com/usersupportcoffee/EN
+
+
 # Take home message {.title}
+
 
 # Take home message
 - OS update coming on Puhti
