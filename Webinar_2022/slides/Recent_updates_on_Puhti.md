@@ -75,12 +75,14 @@ Unported License, [http://creativecommons.org/licenses/by-sa/4.0/](http://creati
 
 # Example
 Old commands:
+
   ```
     module load bioconda
     source activate ipyrad
   ```
 
 New:
+
   ```
     module load ipyrad
   ```
@@ -211,6 +213,7 @@ New:
 
 
 # Example environment file:  
+
   ```
   channels:
     - conda-forge
