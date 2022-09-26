@@ -62,7 +62,7 @@ Unported License, [http://creativecommons.org/licenses/by-sa/4.0/](http://creati
   - Installations generate huge amount of files
   - Causes high load on Lustre file system
   - Has caused problems and system-wide slow-downs
-- https://docs.csc.fi/support/deprecate-conda/
+- [https://docs.csc.fi/support/deprecate-conda](https://docs.csc.fi/support/deprecate-conda)
 
 
 # Replacing Conda
@@ -91,7 +91,7 @@ New:
 - Open-source version of Singularity
 - Old container images work as-is
 - Old commands will work just as before
-  - `singularity` and `singularity_wrapper` are links to `apptainer`and `apptainer_wrapper` respectively
+  - `singularity` and `singularity_wrapper` are links to `apptainer` and `apptainer_wrapper` respectively
 - Environment variables now starting with `SINGULARITY_` should be changed to `APPTAINER_`
   - Old variable names still work, but may give warnings
 
@@ -121,8 +121,8 @@ New:
 
 
 # Test systems  
-- Test system available:
-  - https://csc-guide-preview.rahtiapp.fi/origin/puhti-rhel8/support/tutorials/puhti-rhel8-test/
+- Test systems available:
+  - [https://csc-guide-preview.rahtiapp.fi/origin/puhti-rhel8/support/tutorials/puhti-rhel8-test](https://csc-guide-preview.rahtiapp.fi/origin/puhti-rhel8/support/tutorials/puhti-rhel8-test)
 - If you encounter any problems, contact us at servicedesk@csc.fi
 
 
@@ -277,7 +277,7 @@ New:
 
 # More information in Docs
 
-https://docs.csc.fi/computing/containers/tykky/
+[https://docs.csc.fi/computing/containers/tykky](https://docs.csc.fi/computing/containers/tykky)
 
 
 
@@ -331,11 +331,11 @@ https://docs.csc.fi/computing/containers/tykky/
 
 # Course: CSC Computing Environment
 - Self learning course
-  - https://ssl.eventilla.com/event/CSCCompEnvSelfLearn
+  - [https://ssl.eventilla.com/event/CSCCompEnvSelfLearn](https://ssl.eventilla.com/event/CSCCompEnvSelfLearn)
   - Aimed at beginner to intermediate users
   - Also some advanced topics covered
 - Materials available also directly:
-  - https://csc-training.github.io/csc-env-eff/
+  - [https://csc-training.github.io/csc-env-eff](https://csc-training.github.io/csc-env-eff)
   - Tutorials written to be self-standing introductions to topics
 - Course is meant to complement CSC Docs pages
 
@@ -343,7 +343,7 @@ https://docs.csc.fi/computing/containers/tykky/
 # CSC Research User Support Coffee
 - Have a cup of coffee with our customer support and discuss whatever you have in mind
 - Every Wednesday at 14:00 in Zoom
-- https://ssl.eventilla.com/usersupportcoffee/EN
+- [https://ssl.eventilla.com/usersupportcoffee/EN](https://ssl.eventilla.com/usersupportcoffee/EN)
 
 
 # Take home message {.title}
@@ -353,4 +353,4 @@ https://docs.csc.fi/computing/containers/tykky/
 - OS update coming on Puhti
 - Wrap Conda installations with Tykky
 - Puhti web interface easy way to run graphical applications, Jupyter notebooks, Rstudio etc
-- Self learning corse: CSC Computing Environment
+- Self learning course: CSC Computing Environment
