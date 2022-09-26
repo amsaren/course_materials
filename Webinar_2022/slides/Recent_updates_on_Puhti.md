@@ -75,13 +75,13 @@ Unported License, [http://creativecommons.org/licenses/by-sa/4.0/](http://creati
 
 # Example
 Old commands:
-  ```text
+  ```
     module load bioconda
     source activate ipyrad
   ```
 
 New:
-  ```text
+  ```
     module load ipyrad
   ```
 
@@ -179,13 +179,13 @@ New:
 - Creates wrappers for commands, so no special commands needed:
     Instead of e.g.
 
-     ```text
+     ```
      apptainer_wrapper exec myimage.sif myprog <options>
      ```
      
      just:
     
-     ```text
+     ```
      myprog <options>
      ```
 
@@ -211,7 +211,7 @@ New:
 
 
 # Example environment file:  
-  ```text
+  ```
   channels:
     - conda-forge
   dependencies:
