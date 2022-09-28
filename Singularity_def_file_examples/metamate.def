@@ -1,0 +1,32 @@
+Bootstrap: docker
+From: ubuntu:20.04
+
+%post
+
+  # Install requirements
+  apt update
+  # Install tzdata silently or it will cause problems later
+  DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends tzdata
+  apt install python3 -y
+  apt install pip -y  
+  apt install mafft -y
+  apt install ncbi-blast+ -y
+
+  # Install R & packages
+  apt install r-base -y
+  Rscript -e "install.packages(c('getopt', 'ape', 'fastcluster'), repos = 'https://cloud.r-project.org')"
+
+  # Install metaMATE
+  python3 -m pip install metaMATE
+
+
+%environment
+
+%runscript
+
+  exec "$@"
+
+%help
+
+  metaMATE
+  https://github.com/tjcreedy/metamate
