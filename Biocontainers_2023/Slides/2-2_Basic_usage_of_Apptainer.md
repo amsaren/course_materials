@@ -1,0 +1,210 @@
+---
+theme: csc-2019
+lang: en
+---
+
+# Basic usage of Apptainer containers {.title}
+
+<div class="column">
+![](https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-sa.png)
+</div>
+<div class="column">
+<small>
+All materials (c) 2020-2023 by CSC – IT Center for Science Ltd.
+This work is licensed under a **Creative Commons Attribution-ShareAlike** 4.0
+Unported License, [http://creativecommons.org/licenses/by-sa/4.0/](http://creativecommons.org/licenses/by-sa/4.0/)
+</small>
+</div>
+
+
+# Apptainer on CSC supercomputers
+
+- Apptainer available in Puhti, Mahti and Lumi
+- Apptainer jobs are treated just as any other jobs
+- Users can run their own containers
+  - No need to load a module. Apptainer in `PATH` by default.
+- Some CSC software installations are provided as containers (e.g. R, Python environments, many bio tools)
+  - In many cases the containers are "hidden" behing wrapper scripts
+  - See the software pages in Docs CSC for details
+
+
+# Running Apptainer containers: Basic syntax
+
+- Execute a command in the container
+  - `apptainer exec [exec options...] <container> <command>`
+- Run the default action (runscript) of the container
+  - Defined when the container is built
+  - `apptainer run [run options...] <container>`
+- Open a shell in the container
+  - `apptainer shell [shell options...] <container>`
+
+
+# File system 1/2
+
+- Containers have their own internal file system (FS)
+  - The internal FS is always read-only when executed with user-level rights
+- To access host directories, they need to be mapped to container directories
+  - This can be done with the --bind (-B) option
+  - E.g., to map the host directory `/scratch/project_2001234` to the `/data` directory inside the container: `--bind /scratch/project_2001234:/data`
+  - The target directory inside the container does not need to exist, it is created if necessary
+  - More than one directory can be mapped
+
+
+# File system 2/2
+
+- Basic syntax: `/host/dir:/container/dir`
+- If path is same in host and container it can be specified only once
+  `--bind /scratch:/scratch` and `--bind /scratch` do the same
+- Multiple paths can be separated by comma or given as separate options:
+  `--bind /projapp,/scratch` and `--bind /projappl --bind /scratch` do the same 
+- It is possible to bind file system images
+  `--bind /scratch/project/my_dataset.sqfs:/data:image-src=/`
+
+# `apptainer_wrapper` 1/3
+
+- Running containers with `apptainer_wrapper` takes care of the most common `--bind` commands automatically
+  - Binds: /users, /projappl, /scratch, /appl/data
+  - Binds `$TMPDIR` if set and directory exists
+  - Binds `$LOCAL_SCRATCH` if set
+- For containers that need specific binding it's best to use `apptainer exec --bind`
+
+
+# `apptainer_wrapper`2/3
+- You need to set the `$SING_IMAGE` environment variable to point to the correct Apptainer image file
+
+```bash
+export SING_IMAGE=/path/to/container.sif
+apptainer_wrapper exec myprog <options>
+```
+
+
+# `apptainer_wrapper` 3/4
+
+- Any other options can be set by setting `$SING_FLAGS`
+  - Any additional `--bind` statements
+  - Add `--nv` to use host CUDA
+  - Adding `--cleanev` if necessary
+
+
+# Environment variables
+
+- Most environment variables from the host are inherited by the container
+  - Can be prevented if necessary by adding the option `--cleanenv`
+- Environment variables can be set specifically inside the container by setting on the host `$APPTAINERENV_variablename`.
+  - E.g., to set `$TEST` in a container, set `$APPTAINERENV_TEST` on the host
+
+
+# Temporary files
+
+- Default location for Apptainer temporary files is `~/.apptainer`
+  - Note: These are used by Apptainer itself, not by applications inside teh container
+- Since home directory is quite small, it's best to direct the files to some other location
+  - Especially `.apptainer/cache` can fill up fast if you pull/build containers
+    - Can be safely emptied
+- You can set other location by setting environment variables `$APPTAINER_CACHEDIR` and `$APPTAINER_TMPDIR`
+
+
+# Running containers
+- Containers can be run jus as any other software
+  - Batch job scripts same for containerized and non-containerized sofware
+- When running as a batch job, it is best to use `apptainer exec`
+  - Depending on the runscript `apptainer run` can cause complications, i.e. 
+  variables not inherited as expected, etc
+- If not using `apptainer_wrapper`, remember to bind all necessary directories
+
+
+# Special resources: GPU
+- To Use GPU:
+  - Reserve it in the batch job script:
+    
+    ```
+    --gres=gpu:v100:<number_of_gpus_per_node>
+    ```
+
+  - Also add option `--nv`
+    - Allows container to use host driver stack, CUDA, etc
+  - Depending on the container you may also need to set `APPTAINERENV_LD_LIBRARY_PATH`
+    - In case of CSC installed software, check the Docs
+
+
+# Special resources: NVMe
+- To use fast local NVMe disk: 
+  - Reserve it in the batch job script:
+  
+    ```
+    #SBATCH --gres=nvme:<local_storage_space_per_node>
+    ```
+
+- `$LOCAL_SCRATCH`and `$TMPDIR` are set by the system if NVMe resources allocated for the job 
+  - If using `apptainer_wrapper`, `$LOCAL_SCRATCH` and `$TMPDIR` are bound automatically
+  - If not, it has to be bound, e.g. `--bind $LOCAL_SCRATCH:$TMPDIR`
+
+
+# SquashFS
+- Lustre is very inefficient in handling large number of files in single directory
+- When using Singularity containerized tools you can use SquashFS to package files
+  - Single file on Host filesystem
+  - Can be mounted as a directory inside the container
+  
+  ```
+  mksquashfs my_dataset my_dataset.sqfs
+  singularity exec --bind my_dataset.sqfs:/data:image-src=/ image.sif myprog
+  ```
+
+- See instructions in [Docs](https://docs.csc.fi/computing/containers/run-existing/#mounting-datasets-with-squashfs)
+
+
+# Example batch job script
+
+ ```
+#!/bin/bash
+#SBATCH --job-name=example
+#SBATCH --account=project_12345
+#SBATCH --partition=small
+#SBATCH --time=02:00:00
+#SBATCH --ntasks=1
+#SBATCH --mem-per-cpu=4000
+
+export SING_IMAGE=/scratch/project_12345/image.sif
+export SING_FLAGS="--bind /scratch/project_12345/my_reference:/reference $SING_FLAGS"
+apptainer_wrapper exec myprog -i input -o output
+```
+
+# Some recurring problems 1/4
+
+- Conflicts with host system
+  - Typical causes include `$PYTHONPATH` or `$PERL5LIB` set on host, etc.
+    - Usually due to other modules being loaded or changes to `.bashrc`
+    - Inherited by the container, but interpreted as paths inide the container
+  - Adding option `--cleanenv` prevents host environment variables from being inherited
+
+
+# Some recurring problems 2/4
+
+- Locale related problems
+  - Typically due to host default locale not being available in the container
+  - Try `--cleanenv`
+  - Try setting locale to "C" before running the container
+  
+   ```
+   export LC_ALL=C
+   ``` 
+- Should be solved when building the container, but not an easy option when using a ready container
+
+
+# Some recurring problems 3/4
+
+- Graphics/X11 related problems
+  - Seems to happen mainly with Python
+  - If you get X11 related error message, try unsetting DISPLAY
+  
+    ```
+    unset DISPLAY
+    ```
+
+# Some recurring problems 4/4
+
+- Applications trying to write to container FS
+  - Container FS read-only at runtime, so this will cause an error
+  - See if there is command line option to set the directory the application wants to write to
+  - Try binding it to a writable directory on host
