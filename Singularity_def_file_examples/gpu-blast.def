@@ -1,0 +1,30 @@
+# Starting with a CentOs 7 image as it comes with GCC 4.8.5 as default
+# Definition file to build a GPU-BLAST container
+# CUDA version chosen to be compatible with the host
+
+Bootstrap: docker
+From: nvidia/cuda:11.7.0-devel-centos7
+
+# Using local files as modifications necessary
+# Original files from:
+# https://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/2.2.28/ncbi-blast-2.2.28+-src.tar.gz
+# https://sahinidis.coe.gatech.edu/public/content/gpublast/gpu-blast-1.1_ncbi-blast-2.2.28.tar.gz
+# 'install_new' is the 'install' from gpu-blast modified to use local file and to
+# run with "no" option without prompt:
+#  - Change line 39 to: user_input='no'
+#  - Comment out line 83 (wget ...)
+
+%files
+  ./gpu-blast-1.1_ncbi-blast-2.2.28.tar.gz /gpu-blast-1.1_ncbi-blast-2.2.28.tar.gz
+  ./ncbi-blast-2.2.28++src.tar.gz /ncbi-blast-2.2.28++src.tar.gz
+  ./install_new /install_new
+
+%post
+  # Command 'which' is need for the install script to find nvcc
+  yum install -y which
+  # Installation
+  tar xf gpu-blast-1.1_ncbi-blast-2.2.28.tar.gz
+  ncbi-blast-2.2.28++src.tar.gz
+  sh install_new
+  # Move executables to /usr/local/bin so they are in default $PATH
+  mv /ncbi-blast-2.2.28++src/c++/GCC485-ReleaseMT64/bin/* /usr/local/bin
