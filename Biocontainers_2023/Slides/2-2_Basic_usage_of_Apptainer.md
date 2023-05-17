@@ -19,7 +19,7 @@ Unported License, [http://creativecommons.org/licenses/by-sa/4.0/](http://creati
 
 # Apptainer on CSC supercomputers
 
-- Apptainer available in Puhti, Mahti and Lumi
+- Apptainer available in Puhti, Mahti and LUMI
 - Apptainer jobs are treated just as any other jobs
 - Users can run their own containers
   - No need to load a module. Apptainer in `PATH` by default.
@@ -97,14 +97,20 @@ apptainer_wrapper exec myprog <options>
 # Temporary files
 
 - Default location for Apptainer temporary files is `~/.apptainer`
-  - Note: These are used by Apptainer itself, not by applications inside teh container
+  - Note: These are used by Apptainer itself, not by applications inside the container
 - Since home directory is quite small, it's best to direct the files to some other location
   - Especially `.apptainer/cache` can fill up fast if you pull/build containers
     - Can be safely emptied
+      
+        ```bash
+        apptainer cache clean
+        ```
+
 - You can set other location by setting environment variables `$APPTAINER_CACHEDIR` and `$APPTAINER_TMPDIR`
 
 
 # Running containers
+
 - Containers can be run jus as any other software
   - Batch job scripts same for containerized and non-containerized sofware
 - When running as a batch job, it is best to use `apptainer exec`
@@ -114,6 +120,7 @@ apptainer_wrapper exec myprog <options>
 
 
 # Special resources: GPU
+
 - To Use GPU:
   - Reserve it in the batch job script:
     
@@ -128,6 +135,7 @@ apptainer_wrapper exec myprog <options>
 
 
 # Special resources: NVMe
+
 - To use fast local NVMe disk: 
   - Reserve it in the batch job script:
   
@@ -138,11 +146,13 @@ apptainer_wrapper exec myprog <options>
 - `$LOCAL_SCRATCH`and `$TMPDIR` are set by the system if NVMe resources allocated for the job 
   - If using `apptainer_wrapper`, `$LOCAL_SCRATCH` and `$TMPDIR` are bound automatically
   - If not, it has to be bound, e.g. `--bind $LOCAL_SCRATCH:$TMPDIR`
+  - It may be necessary to bind $TMPDIR to /tmp: `--bind $TMPDIR:/tmp`
 
 
 # SquashFS
+
 - Lustre is very inefficient in handling large number of files in single directory
-- When using Singularity containerized tools you can use SquashFS to package files
+- When using Apptainer containerized tools you can use SquashFS to package files
   - Single file on Host filesystem
   - Can be mounted as a directory inside the container
   
@@ -170,7 +180,7 @@ export SING_FLAGS="--bind /scratch/project_12345/my_reference:/reference $SING_F
 apptainer_wrapper exec myprog -i input -o output
 ```
 
-# Some recurring problems 1/4
+# Some recurring problems 1/5
 
 - Conflicts with host system
   - Typical causes include `$PYTHONPATH` or `$PERL5LIB` set on host, etc.
@@ -179,7 +189,7 @@ apptainer_wrapper exec myprog -i input -o output
   - Adding option `--cleanenv` prevents host environment variables from being inherited
 
 
-# Some recurring problems 2/4
+# Some recurring problems 2/5
 
 - Locale related problems
   - Typically due to host default locale not being available in the container
@@ -192,7 +202,7 @@ apptainer_wrapper exec myprog -i input -o output
 - Should be solved when building the container, but not an easy option when using a ready container
 
 
-# Some recurring problems 3/4
+# Some recurring problems 3/5
 
 - Graphics/X11 related problems
   - Seems to happen mainly with Python
@@ -202,9 +212,14 @@ apptainer_wrapper exec myprog -i input -o output
     unset DISPLAY
     ```
 
-# Some recurring problems 4/4
+# Some recurring problems 4/5
 
 - Applications trying to write to container FS
   - Container FS read-only at runtime, so this will cause an error
   - See if there is command line option to set the directory the application wants to write to
-  - Try binding it to a writable directory on host
+  - Try binding the directory to a writable directory on host
+
+# Some recurring problems 5/5
+
+- Error message about not being able to mount /tmp
+  - Usually solved by defining `$TMPDIR`

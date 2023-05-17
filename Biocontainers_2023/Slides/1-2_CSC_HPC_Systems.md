@@ -69,11 +69,11 @@ Roughly you can think of
 |                             | [Puhti](https://docs.csc.fi/computing/systems-puhti/)  | [Mahti](https://docs.csc.fi/computing/systems-mahti/)    | [LUMI](https://docs.lumi-supercomputer.eu/hardware/) |
 | ----------------------------------- |------- | ----     | ---- |
 | Pre-installed apps | [120+](https://docs.csc.fi/apps/by_system/#puhti) | [20+](https://docs.csc.fi/apps/by_system/#mahti) | [See here](https://docs.lumi-supercomputer.eu/software/)
-| Cores per node              | 40     | 128       | 128
-| Job size (min-max cores)    | 1-1040 | 128-25600 | 1-65536
-| Memory per node (GiB)       | 192-1536 | 256     | 256-1024
-| GPU cards          | 320 (V100) | 96 (A100) | 10240 (MI250X)
-| Fast local disks (NVMe) | 106 CPU, 80 GPU   | 24 GPU  | -
+| Cores per node              | 40     | 128       | 128 |
+| Job size (min-max cores)    | 1-1040 | 128-25600 | 1-65536 |
+| Memory per node (GiB)       | 192-1536 | 256     | 256-1024 |
+| GPU cards          | 320 (V100) | 96 (A100) | 10240 (MI250X) |
+| Fast local disks (NVMe) | 106 CPU, 80 GPU   | 24 GPU  | 8 CPU, 8 GPU (LUMI-D) | 
 
 <small>
 In short: Mahti is for large parallel jobs, prepare to install and optimize your code. Still, one Puhti *node* is 10x your laptop. LUMI is like Mahti + massive AMD GPU capacity
@@ -82,7 +82,6 @@ In short: Mahti is for large parallel jobs, prepare to install and optimize your
 # Puhti
 
 - On this course we will be using mainly Puhti
-- Puhti is often the most suitable system for a typical bioscience job
   - Large memory (up to 1,5 TB) available
   - Fast local disc (up to 3,6 TB) available
   - Resources provisoned on per-core basis, so even smaller jobs can be run efficiently

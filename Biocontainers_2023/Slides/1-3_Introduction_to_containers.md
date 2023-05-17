@@ -29,7 +29,7 @@ Unported License, [http://creativecommons.org/licenses/by-sa/4.0/](http://creati
 # Containers
 
 - Containers are a way of packaging software and their dependencies (libraries, etc.)
-- Popular container engines include Docker, Apptainer (previously called Singularity), Shifter
+- Popular container engines include Docker, Apptainer (open source fork of Singularity), Shifter
 - Apptainer is most popular in HPC environments
 
 
@@ -37,15 +37,16 @@ Unported License, [http://creativecommons.org/licenses/by-sa/4.0/](http://creati
 - The open source project formerly called Singularity is now called Apptainer (since March 2022)
 - Sylabs continues to develop commercially oriented products such as Singularity (formerly SingularityCE) and SingularityPro
 - Apptainer 1.0 was forked from Singularity 3.9.5 with some [changes](https://github.com/apptainer/apptainer/releases/tag/v1.0.0)
-- Singularity and Apptainer are currently very similar, but they are now developed independently and will continue to diverge
+- Singularity and Apptainer are currently very similar, but they are now developed independently and will probably continue to diverge
 
 
 # Apptainer/Singularity differences
 - All SINGULARITY_ and SINGULARITYENV_ variables work for now, but you will get a warning
   - There are currently corresponding APPTAINER_ and APPTAINERENV_ variables, but the naming may change in the future
+  - If both SINGULARITY_/SINGULARITYENV_ and APPTAINER_/APPTAINERENV_ are defined for a given variable, APPTAINER values will be used.
 - On CSC machines commands `singularity` and `singularity_wrapper` are symlinked to `apptainer` and `apptainer_wrapper` respectively
 
-TLDR: Most older singularity instructions work currently as-is, but this will probably change as time goes on
+TLDR: Most older singularity instructions work currently as-is, but this will probably change as time goes on.
 
 
 # Containers vs. virtual machines (1/2)
@@ -101,10 +102,11 @@ TLDR: Most older singularity instructions work currently as-is, but this will pr
 
 # Using Docker containers with Apptainer
 
-- You can build an Apptainer container from a Docker container with normal user rights:
+- You can pull and convert a Docker container image with normal user rights:
+  - `apptainer pull docker://<address>:<tag>`
   - `apptainer build <image> docker://<address>:<tag>`
 - For example:
-  - `apptainer build pytorch_19.10-py3.sif docker://nvcr.io/nvidia/pytorch:19.10-py3`
+  - `apptainer pull docker://nvcr.io/nvidia/pytorch:19.10-py3`
 - More information in our documentation:
   - [Running Apptainer containers](https://docs.csc.fi/computing/containers/run-existing/)
   - [Creating Apptainer containers](https://docs.csc.fi/computing/containers/creating/)
@@ -118,7 +120,7 @@ TLDR: Most older singularity instructions work currently as-is, but this will pr
   - Complex installations with many dependencies/files
   - Obsolete dependencies incompatible with the native environment
     - Still needs to be kernel-compatible
-  - Native use of [Conda has been deprecated](https://docs.csc.fi/support/deprecate-conda/) on CSC supercomputers
+  - Native use of Conda has been deprecated on CSC supercomputers
     - Conda environments can be installed inside containers
     - Container wrapper tool [Tykky](https://docs.csc.fi/computing/containers/tykky/) provided for this
 - Should be considered even when other methods exist
