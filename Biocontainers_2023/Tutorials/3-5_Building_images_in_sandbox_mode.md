@@ -1,15 +1,15 @@
 ---
 topic: containers
-title: Tutorial6(Bonus) - Building Singularity container images in sandbox mode
+title: Tutorial (Bonus) - Building Apptainer container images in sandbox mode
 ---
 
-# Building Singularity containers in sandbox mode
+# Building Apptainer containers in sandbox mode
 
 In this tutorial we create a Singularity container in sandbox mode.
 
 This is an extra exercise. It can not be run in Puhti. You will need  access
 to a computer or a virtual machine where you have sudo rights and that has
-Singularity 3.x installed.
+Apptainer 1.x installed.
 
 When building a container in sandbox mode, the container image is created
 as a writable directory tree that corresponds to the internal file system of
@@ -21,17 +21,17 @@ etc). The problem is that a container created this way is not easily reproducibl
 It is a good practise to keep track of the commands you use and write a definition
 file afterwrds.
 
-In this tutorial we focus on using Singularity. In our course 
+In this tutorial we focus on using Apptainer. In our course 
 [Using CSC HPC Environment Efficiently](https://csc-training.github.io/csc-env-eff/)
 we have a tutorial [Installing a simple C code from source](https://github.com/csc-training/csc-env-eff/blob/master/_hands-on/installing/installing_hands-on_mcl.md) where you can find more information on the installation
 process itself.
 
 In this tutorial we only cover the basics. Detailed instructions can be found
-in the [Singularity manual](https://sylabs.io/guides/3.7/user-guide).
+in the [Apptainer User Guide](https://apptainer.org/docs/user/latest/).
 
 ## 1. Create the base image
 
-One way to create a Singularity container is to do it in so-called sandbox
+One way to create an Apptainer container is to do it in so-called sandbox
 mode. Instead of an image file, we create a directory structure
 representing the file system of the container. 
 
@@ -54,7 +54,7 @@ Include: yum
 ```
 We then use that definition file to build the container:
 ```bash
-sudo singularity build --sandbox mcl centos.def
+sudo apptainer build --sandbox mcl centos.def
 ```
 Note that instead of an image file, we created a directory called `mcl`. If
 you need to include some reference files etc, you can copy them to correct subfolder.
@@ -64,9 +64,9 @@ you need to include some reference files etc, you can copy them to correct subfo
 We can then open a shell in the container. We need the container file system 
 to be writable, so we include option `--writable`:
 ```bash
-sudo singularity shell --writable mcl
+sudo apptainer shell --writable mcl
 ```
-The command prompt should now be `singularity>`
+The command prompt should now be `Apptainer>`
 
 ## 3. Installing the software
 
@@ -134,11 +134,11 @@ In order to run the container without sudo rights we need to build
 a production image from the sandbox:
 
 ```bash
-sudo singularity build  mcl.sif mcl
+sudo apptainer build  mcl.sif mcl
 ```
 We can now test it. Note that we no longer need `sudo`:
 ```bash
-singularity exec mcl.sif mcl --version
+apptainer exec mcl.sif mcl --version
 ```
 The image could now be transferred to e.g. Puhti and used there as well.
 
@@ -164,7 +164,7 @@ Command `history` can be useful to keep track of the actual installation
 commands, but if you need try several different thing, keep track of what 
 finally worked.
 
-We have a separate tutorial on [Creating Singularity containers from definition files](.\building_containers_from_def_file.md),
+We have a separate tutorial on Creating Singularity containers from definition files,
 so we will not go into details here.
 
 Check the [example definition file](https://github.com/amsaren/course_materials/blob/main/Singularity_def_file_examples/mcl.def) for this exercise.
