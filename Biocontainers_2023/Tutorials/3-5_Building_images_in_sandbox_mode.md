@@ -5,7 +5,7 @@ title: Tutorial (Bonus) - Building Apptainer container images in sandbox mode
 
 # Building Apptainer containers in sandbox mode
 
-In this tutorial we create a Singularity container in sandbox mode.
+In this tutorial we create a Apptainer container in sandbox mode.
 
 This is an extra exercise. It can not be run in Puhti. You will need  access
 to a computer or a virtual machine where you have sudo rights and that has
@@ -13,7 +13,7 @@ Apptainer 1.x installed.
 
 When building a container in sandbox mode, the container image is created
 as a writable directory tree that corresponds to the internal file system of
-the container. The installation is then done interactively using `singularity shell`.
+the container. The installation is then done interactively using `apptainer shell`.
 
 Using the sandbox mode can be a bit more intuive and faster than using definition
 files, especially if you have to iterate some parts (finding correct library versions 
@@ -164,7 +164,7 @@ Command `history` can be useful to keep track of the actual installation
 commands, but if you need try several different thing, keep track of what 
 finally worked.
 
-We have a separate tutorial on Creating Singularity containers from definition files,
+We have a separate tutorial on Creating Apptainer containers from definition files,
 so we will not go into details here.
 
 Check the [example definition file](https://github.com/amsaren/course_materials/blob/main/Singularity_def_file_examples/mcl.def) for this exercise.
