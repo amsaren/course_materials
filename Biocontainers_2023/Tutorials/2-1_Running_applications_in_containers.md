@@ -1,5 +1,5 @@
 ---
-topic: singularity
+topic: containers
 title: Tutorial - Running applications in containers
 ---
 

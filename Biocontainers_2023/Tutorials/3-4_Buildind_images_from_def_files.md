@@ -21,7 +21,7 @@ We will be building a container for [MACS3](https://github.com/macs3-project/MAC
 
 ## 1. Build system
 
-Login information ti be added later
+Login information to be added later
 
 
 ## 2. Creating a definition file
@@ -138,7 +138,7 @@ Comment out or delete the pip command, and add the following to the definition f
 You can now try to build it:
 
 ```bash
-apptainer build --remote macs3.sif macs3.def
+apptainer build macs3.sif macs3.def
 ```
 
 If the build finishes, try it:
@@ -179,7 +179,8 @@ We will now need to adjust `$PATH` and `$PYTHONPATH`:
 
 💬These can also be set at runtime in the host system, but it's more user friendly to set them in container.
 
-In the finished container image these commands are stored in script `/environment`.
+For future compatibility it is best to make any changes to environment in the %environment section
+or using variable `$APPTAINER_ENVIRONMENT` in %post, instead of relying on any fixed file path (/environment or a file in /.singularity.d/env).
 
 You can try this definition file as above:
 

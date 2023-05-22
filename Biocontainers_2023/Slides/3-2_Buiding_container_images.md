@@ -162,7 +162,6 @@ comfortable working with.
 # %environment
 
 - Can be used to set any environment variables, e.g `$PATH`
-- Will be stored in file `/environment` inside the container
 
   ```
   %environment
@@ -187,7 +186,6 @@ comfortable working with.
 # %runscript
 
 - Defines the runscript
-- Will be stored in file `/apptainer` inside the container
 - Executed when container run with:
 
   ```
