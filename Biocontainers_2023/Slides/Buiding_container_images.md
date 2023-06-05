@@ -31,7 +31,7 @@ Unported License, [http://creativecommons.org/licenses/by-sa/4.0/](http://creati
 
 # Building Apptainer Containers
 
-- There two main ways to build containers
+- There are two main ways to build containers
   - Building using a definition file
   - Building interactively using the sandbox mode
 
@@ -77,6 +77,7 @@ specifying a bootstrap agent and source
   - E.g. if you have installation instructions for a certain Linux distro, start with that
   - If you need MPI, it's best to start with an image that is close to the host system
     - E.g for Puhti and Mahti use a distro based on RHEL8 (e.g. Rocky 8)
+    - MPI in the container must be ABI compatible with MPI in host. By choosing similar base distro you minimize the chances of MPI installation problems
 - If there are no specific reasons to choose a particular distro, just pick the one you are most 
 comfortable working with.
 
@@ -87,7 +88,7 @@ comfortable working with.
   - [DockerHub](https://hub.docker.com/)
   - [Sylabs Cloud Library](https://cloud.sylabs.io/library)
     - Note that `library:` bootstrap agent does not work in Apptainer by default
-    [Restoring pre-Apptainer library behavior](https://apptainer.org/docs/user/latest/endpoint.html#no-default-remote)
+      - [Restoring pre-Apptainer library behavior](https://apptainer.org/docs/user/latest/endpoint.html#no-default-remote)
   - [SingularityHub](https://datasets.datalad.org/?dir=/shub/)
     - Note that since early 2021 SingularityHub is no longer maintained and is read-only. 
     For new images it's best to use other sources, e.g. DockerHub
@@ -136,8 +137,9 @@ comfortable working with.
 - There are sections to define the environment variables, installation commands, metadata etc
 - All sections are optional and can be in any order
 - Section labels start with %
-  - Available section labels: `%setup, %files, %environment, %post, %runscript, %startscript, %test, %labels, %help`
-- See Singularity documentation for full descriptions.
+  - Standard sections: `%setup, %files, %environment, %post, %runscript, %startscript, %test, %labels, %help`
+  - Various `%apps*` sections for [SCIF](https://sci-f.github.io/) Apps support 
+- See [Apptainer documentation](https://apptainer.org/docs/user/latest/definition_files.html) for full descriptions.
 
 
 # %setup
@@ -317,11 +319,15 @@ From: ubuntu:20.04
   of what worked.
 
 
-# Best practices
+# Best practices 1/2
 
 - Always install packages, programs, data, and files into operating system locations (e.g. not `/home`, `/tmp`, or any other directories that might get commonly binded on).
 - Document your container. If your runscript doesn’t supply help, write a `%help` or `%apphelp` section. A good container tells the user how to interact with it.
 - If you require any special environment variables to be defined, add them to the `%environment` and `%appenv` sections of the build recipe.
+
+
+# Best practices 2/2
+
 - Files should always be owned by a system account (UID less than 500).
 - Ensure that sensitive files like `/etc/passwd`, `/etc/group`, and `/etc/shadow` do not contain secrets.
 - Build production containers from a definition file instead of a sandbox that has been manually changed. This ensures the greatest possibility of reproducibility and mitigates the “black box” effect.
