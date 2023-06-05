@@ -22,7 +22,7 @@ Unported License, [http://creativecommons.org/licenses/by-sa/4.0/](http://creati
 - Apptainer available in Puhti, Mahti and LUMI
 - Apptainer jobs are treated just as any other jobs
 - Users can run their own containers
-  - No need to load a module. Apptainer in `PATH` by default.
+  - No need to load a module. Apptainer in `$PATH` by default.
 - Some CSC software installations are provided as containers (e.g. R, Python environments, many bio tools)
   - In many cases the containers are "hidden" behing wrapper scripts
   - See the software pages in Docs CSC for details
@@ -44,7 +44,7 @@ Unported License, [http://creativecommons.org/licenses/by-sa/4.0/](http://creati
 - Containers have their own internal file system (FS)
   - The internal FS is always read-only when executed with user-level rights
 - To access host directories, they need to be mapped to container directories
-  - This can be done with the --bind (-B) option
+  - This can be done with the `--bind (-B)` option
   - E.g., to map the host directory `/scratch/project_2001234` to the `/data` directory inside the container: `--bind /scratch/project_2001234:/data`
   - The target directory inside the container does not need to exist, it is created if necessary
   - More than one directory can be mapped
@@ -72,10 +72,10 @@ Unported License, [http://creativecommons.org/licenses/by-sa/4.0/](http://creati
 # `apptainer_wrapper`2/3
 - You need to set the `$SING_IMAGE` environment variable to point to the correct Apptainer image file
 
-```bash
-export SING_IMAGE=/path/to/container.sif
-apptainer_wrapper exec myprog <options>
-```
+  ```bash
+  export SING_IMAGE=/path/to/container.sif
+  apptainer_wrapper exec myprog <options>
+  ```
 
 
 # `apptainer_wrapper` 3/4
@@ -111,7 +111,7 @@ apptainer_wrapper exec myprog <options>
 
 # Running containers
 
-- Containers can be run jus as any other software
+- Containers can be run just as any other software
   - Batch job scripts same for containerized and non-containerized sofware
 - When running as a batch job, it is best to use `apptainer exec`
   - Depending on the runscript `apptainer run` can cause complications, i.e. 
@@ -143,7 +143,7 @@ apptainer_wrapper exec myprog <options>
     #SBATCH --gres=nvme:<local_storage_space_per_node>
     ```
 
-- `$LOCAL_SCRATCH`and `$TMPDIR` are set by the system if NVMe resources allocated for the job 
+- `$LOCAL_SCRATCH` and `$TMPDIR` are set by the system if NVMe resources allocated for the job 
   - If using `apptainer_wrapper`, `$LOCAL_SCRATCH` and `$TMPDIR` are bound automatically
   - If not, it has to be bound, e.g. `--bind $LOCAL_SCRATCH:$TMPDIR`
   - It may be necessary to bind $TMPDIR to /tmp: `--bind $TMPDIR:/tmp`
@@ -206,7 +206,7 @@ apptainer_wrapper exec myprog -i input -o output
 
 - Graphics/X11 related problems
   - Seems to happen mainly with Python
-  - If you get X11 related error message, try unsetting DISPLAY
+  - If you get X11 related error message, try unsetting `$DISPLAY`
   
     ```
     unset DISPLAY
@@ -221,5 +221,5 @@ apptainer_wrapper exec myprog -i input -o output
 
 # Some recurring problems 5/5
 
-- Error message about not being able to mount /tmp
+- Error message about not being able to mount `/tmp`
   - Usually solved by defining `$TMPDIR`
