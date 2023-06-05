@@ -323,7 +323,7 @@ From: ubuntu:20.04
 
 - Always install packages, programs, data, and files into operating system locations (e.g. not `/home`, `/tmp`, or any other directories that might get commonly binded on).
 - Document your container. If your runscript doesn’t supply help, write a `%help` or `%apphelp` section. A good container tells the user how to interact with it.
-- If you require any special environment variables to be defined, add them to the `%environment` and `%appenv` sections of the build recipe.
+- If you require any special environment variables to be defined, add them to the `%environment` or `%appenv` sections of the build recipe.
 
 
 # Best practices 2/2
