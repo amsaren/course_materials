@@ -315,3 +315,13 @@ From: ubuntu:20.04
 - If you you plan on doing this, keep track of the commands you use
   - Command `history` can help, but if you try many things, keep track 
   of what worked.
+
+
+# Best practices
+
+- Always install packages, programs, data, and files into operating system locations (e.g. not `/home`, `/tmp`, or any other directories that might get commonly binded on).
+- Document your container. If your runscript doesn’t supply help, write a `%help` or `%apphelp` section. A good container tells the user how to interact with it.
+- If you require any special environment variables to be defined, add them to the `%environment` and `%appenv` sections of the build recipe.
+- Files should always be owned by a system account (UID less than 500).
+- Ensure that sensitive files like `/etc/passwd`, `/etc/group`, and `/etc/shadow` do not contain secrets.
+- Build production containers from a definition file instead of a sandbox that has been manually changed. This ensures the greatest possibility of reproducibility and mitigates the “black box” effect.
