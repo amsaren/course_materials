@@ -24,7 +24,7 @@ Unported License, [http://creativecommons.org/licenses/by-sa/4.0/](http://creati
 - In Puhti and Mahti:
 
   ```
-  module load tykky`
+  module load tykky
   ```
 
 - In Lumi:
@@ -116,7 +116,7 @@ python setup.py install
 wrap-container -w /path/inside/container <container> --prefix <install_dir> 
 ```
 
-- `-w` is the path (or comma separated list of paths) where the executables to be wrapped are. Needs to an absolut path inside the container.
+- `-w` is the path (or comma separated list of paths) where the executables to be wrapped are. Needs to an absolute path inside the container.
 
 
 # Running Tykky installed software
@@ -129,7 +129,7 @@ wrap-container -w /path/inside/container <container> --prefix <install_dir>
 
 - Tykky installation bin directory often contains common programs (e.g. as python)
   - Can cause conflicts with other software
-  - Only add to PATH when actually using
+  - Only add to `$PATH` when actually using
 
 
 # Common problems
