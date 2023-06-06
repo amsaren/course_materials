@@ -78,7 +78,7 @@ Unported License, [http://creativecommons.org/licenses/by-sa/4.0/](http://creati
   ```
 
 
-# `apptainer_wrapper` 3/4
+# `apptainer_wrapper` 3/3
 
 - Any other options can be set by setting `$SING_FLAGS`
   - Any additional `--bind` statements
@@ -125,7 +125,7 @@ Unported License, [http://creativecommons.org/licenses/by-sa/4.0/](http://creati
   - Reserve it in the batch job script:
     
     ```
-    --gres=gpu:v100:<number_of_gpus_per_node>
+    #SBATCH --gres=gpu:v100:<number_of_gpus_per_node>
     ```
 
   - Also add option `--nv`
@@ -145,7 +145,7 @@ Unported License, [http://creativecommons.org/licenses/by-sa/4.0/](http://creati
 
 - `$LOCAL_SCRATCH` and `$TMPDIR` are set by the system if NVMe resources allocated for the job 
   - If using `apptainer_wrapper`, `$LOCAL_SCRATCH` and `$TMPDIR` are bound automatically
-  - If not, it has to be bound, e.g. `--bind $LOCAL_SCRATCH:$TMPDIR`
+  - If not, it has to be bound, e.g. `--bind $LOCAL_SCRATCH,$TMPDIR`
   - It may be necessary to bind $TMPDIR to /tmp: `--bind $TMPDIR:/tmp`
 
 
