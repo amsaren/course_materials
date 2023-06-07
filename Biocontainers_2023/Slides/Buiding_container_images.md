@@ -268,6 +268,14 @@ From: ubuntu:20.04
   hello2  /found/me/hello2
 ```
 
+# Building the image
+
+- To build with a definition file:
+
+  ```
+  sudo apptainer build myapp.sif myapp.def
+  ```
+
 
 # Sandbox mode 1/4
 

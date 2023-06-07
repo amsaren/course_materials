@@ -18,6 +18,8 @@ From: ubuntu:20.04
 
 %environment
 
+  export PYTHONPATH=/usr/lib/python3.8/site-packages/
+
 %runscript
 
   exec "$@"
