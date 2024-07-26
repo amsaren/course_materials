@@ -18,7 +18,7 @@ From: continuumio/miniconda3
   conda install myprog
 
   # Cleaning up cache etc will make a smaller image file
-  conda clean --all
+  conda clean --all -y
 
 %runscript
     exec "$@"
