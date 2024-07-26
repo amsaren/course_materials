@@ -1,0 +1,28 @@
+# This build a container with a Conda environment
+# from a environment YAML file.
+# It expects to find file "environment.yaml" in
+# the same directory where you run the build command.
+
+Bootstrap: docker
+From: continuumio/miniconda3
+
+%files
+  environment.yml
+
+%post
+  # Name for the environment
+  ENV_NAME=env
+  # These lines make sure the conda environmet is active at runtime
+  echo ". /opt/conda/etc/profile.d/conda.sh" >> $SINGULARITY_ENVIRONMENT
+  echo "conda activate $ENV_NAME" >> $SINGULARITY_ENVIRONMENT
+
+  # Activate conda base, create and activate the environmet
+  . /opt/conda/etc/profile.d/conda.sh
+  conda env create --file environment.yml --prefix /opt/conda/envs/$ENV_NAME
+  conda activate $ENV_NAME
+
+  # Cleaning up cache etc will make a smaller image file
+  conda clean --all -y
+
+%runscript
+    exec "$@"
