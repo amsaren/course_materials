@@ -3,7 +3,7 @@ theme: csc-2019
 lang: en
 ---
 
-# Brief introduction to Apptainer containers {.title}
+# Introduction to Apptainer containers {.title}
 
 <div class="column">
 ![](https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-sa.png)
