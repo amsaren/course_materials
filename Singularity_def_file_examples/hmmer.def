@@ -1,0 +1,18 @@
+Bootstrap: docker
+From: rockylinux:8.6
+
+%post
+  # Install compilers and other tools including git
+  yum group install "Development Tools" -y
+
+  # Install HMMER
+  git clone https://github.com/EddyRivasLab/hmmer
+  cd hmmer
+  git clone https://github.com/EddyRivasLab/easel
+  autoconf
+  ./configure
+  make
+  make install
+
+%runscript
+  exec /bin/bash "$@"
