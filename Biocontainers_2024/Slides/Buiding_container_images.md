@@ -278,7 +278,7 @@ From: ubuntu:20.04
   sudo apptainer build myapp.sif myapp.def
   ```
 
-or:
+  or:
 
   ```
   apptainer build --fakeroot myapp.sif myapp.def
@@ -292,9 +292,9 @@ or:
   from a bootstrap agent: 
 
     ```
-    apptainer build --sandbox myprog/ docker://ubuntu:22.04
+    apptainer build --fix-perms --sandbox myprog/ docker://ubuntu:22.04
     ```
-
+  - Depending on host file system you may need to specify `--fix-perms`
   - Creates a folder structure instead of an image file
   - You can copy files directly to correct subfolder
 
@@ -310,6 +310,8 @@ or:
   
   - Depending on base image system, package managers can be used to install 
     libraries and dependencies (`apt install` , `yum install` etc)
+    - If using package managers you may need to specify `--fakeroot`
+  - Also `--cleanenv` may be needed 
   - Installation as per software developer instructions
   
 
