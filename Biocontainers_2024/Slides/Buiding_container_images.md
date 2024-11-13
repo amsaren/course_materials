@@ -190,6 +190,12 @@ comfortable working with.
 # %runscript
 
 - Defines the runscript
+
+  ```
+  %runscript
+    exec myprog "$@"'  # Runs program "myprog" with command line options provided
+  ```
+
 - Executed when container run with:
 
   ```
@@ -345,6 +351,4 @@ From: ubuntu:20.04
 
 # Best practices 2/2
 
-- Files should always be owned by a system account (UID less than 500).
-- Ensure that sensitive files like `/etc/passwd`, `/etc/group`, and `/etc/shadow` do not contain secrets.
 - Build production containers from a definition file instead of a sandbox that has been manually changed. This ensures the greatest possibility of reproducibility and mitigates the “black box” effect.
