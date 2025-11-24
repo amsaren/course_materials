@@ -140,7 +140,7 @@ wrap-container -w /path/inside/container <container> --prefix <install_dir>
   ```
   sinteractive --account <project> --time 1:00:00 --mem 12000 --tmp 15
   ```
-
+  - When building in an interactive session also request local disk (`--tmp`) as /tmp gets easily filled
 - Most common reason for non memory related errors is problems with the environment YAML file syntax
   - Check e.g. the indentation and syntax for version numbers
 - For Conda environment related errors follow normal procedure (a gallon of coffee and a spare keyboard to bang your head on recommended)
@@ -159,6 +159,6 @@ wrap-container -w /path/inside/container <container> --prefix <install_dir>
 
 # Documentation
 
-- [Puhti, Mahti](https://docs.csc.fi/computing/containers/tykky/)
-- [Lumi](https://docs.lumi-supercomputer.eu/software/installing/container-wrapper/)
+- [Tykky fo Puhti and Mahti](https://docs.csc.fi/computing/containers/tykky/)
+- [LUMI container wrapper](https://docs.lumi-supercomputer.eu/software/installing/container-wrapper/)
 - [LUMI containr]( https://docs.lumi-supercomputer.eu/software/containers/singularity/)
