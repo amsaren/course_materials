@@ -10,7 +10,7 @@ lang: en
 </div>
 <div class="column">
 <small>
-All materials (c) 2020-2024 by CSC – IT Center for Science Ltd.
+All materials (c) 2020-2025 by CSC – IT Center for Science Ltd.
 This work is licensed under a **Creative Commons Attribution-ShareAlike** 4.0
 Unported License, [http://creativecommons.org/licenses/by-sa/4.0/](http://creativecommons.org/licenses/by-sa/4.0/)
 </small>
@@ -24,8 +24,8 @@ Unported License, [http://creativecommons.org/licenses/by-sa/4.0/](http://creati
 
 # Privileges
 
-- Building containers requires root access
-  - `sudo` and namespaces unavailable in CSC systems due to safety reasons
+- Unlimited building of containers requires root access
+  - `sudo` and namespaces unavailable for users in CSC systems due to safety reasons
 - Unprivileged building possible with some limitations using [fakeroot](https://apptainer.org/docs/user/latest/fakeroot.html)
   - Available on CSC supercomputers
   - User appears as `root:root` inside the container but has no actual root privileges
@@ -59,7 +59,7 @@ Unported License, [http://creativecommons.org/licenses/by-sa/4.0/](http://creati
 - Cons:
   - Installation steps not documented
   - Results not easily reproducible or reusable
-    - e.g. to update a software you'll have to start from scratch again
+    - Possible to start from existing image, but often easier to start from scratch
 
 
 # Base images
@@ -87,13 +87,15 @@ comfortable working with.
 # Base image sources
 
 - Base images can be found e.g. 
-  - [DockerHub](https://hub.docker.com/)
+  - [Docker Hub](https://hub.docker.com/)
   - [Sylabs Cloud Library](https://cloud.sylabs.io/library)
     - Note that `library:` bootstrap agent does not work in Apptainer by default
       - [Restoring pre-Apptainer library behavior](https://apptainer.org/docs/user/latest/endpoint.html#no-default-remote)
   - [SingularityHub](https://datasets.datalad.org/?dir=/shub/)
     - Note that since early 2021 SingularityHub is no longer maintained and is read-only. 
     For new images it's best to use other sources, e.g. DockerHub
+
+Only use images from trusted sources!
 
 
 # Definition files
@@ -124,7 +126,7 @@ comfortable working with.
 
 # Header example 2
 
-- Example using "yum" bootsrtap agent and distrubution files from CentOs site:
+- Example using "yum" bootstrap agent and distrubution files from CentOs site:
 
   ```
   Bootstrap: yum
@@ -147,7 +149,7 @@ comfortable working with.
 # %setup
 
 - Commands to be run `in the host` after the base container is running
-- Care should be taken as these command are run with root rights
+- Care should be taken especially if building as root as these commands will also be run with root rights
   - Check especially if you got the definition file from the net
 - Rarely needed and should be avoided
 
@@ -179,10 +181,11 @@ comfortable working with.
 - Typically includes any installation commands
   - Note that base images typically don't include any programming languages, compilers etc, 
   so start by installing what you need.
+- Don't include `sudo` in the commands  
 
   ```
   %post
-    apt install python3
+    apt install -y python3
     pip install numpy
   ```
 
@@ -291,7 +294,7 @@ From: ubuntu:20.04
   ```
 - If `sudo` or namespaces are not available `--fakeroot` is assumed so it can be omitted 
 
-# Sandbox mode 1/4
+# Sandbox mode 1
 
 - Build a basic container in sandbox mode (`--sandbox`)
   - You can start with a simple definition file (just the header) or
@@ -305,7 +308,7 @@ From: ubuntu:20.04
   - You can copy files directly to correct subfolder
 
 
-# Sandbox mode 2/4
+# Sandbox mode 2
 
 - Open a shell in the container and install software
   - To open in writable mode use option `--writable`
@@ -319,9 +322,10 @@ From: ubuntu:20.04
     - If using package managers you may need to specify `--fakeroot`
   - Also `--cleanenv` may be needed 
   - Installation as per software developer instructions
+    - Don't include `sudo` in commands
   
 
-# Sandbox mode 3/4
+# Sandbox mode 3
 
 - Build a production image from the sandbox
 
@@ -332,7 +336,7 @@ From: ubuntu:20.04
   - Production image can be run with user rights 
 
 
-# Sandbox mode 4/4 (optional)
+# Sandbox mode 4 (optional)
 
 - Make a definition file and re-build a production image from it
   - Helps with updating and re-using containers
@@ -342,13 +346,70 @@ From: ubuntu:20.04
   of what worked.
 
 
-# Best practices 1/2
+# Best practices 1
 
 - Always install packages, programs, data, and files into operating system locations (e.g. not `/home`, `/tmp`, or any other directories that might get commonly binded on).
 - Document your container. If your runscript doesn’t supply help, write a `%help` or `%apphelp` section. A good container tells the user how to interact with it.
 - If you require any special environment variables to be defined, add them to the `%environment` or `%appenv` sections of the build recipe.
 
 
-# Best practices 2/2
+# Best practices 2
 
 - Build production containers from a definition file instead of a sandbox that has been manually changed. This ensures the greatest possibility of reproducibility and mitigates the “black box” effect.
+
+
+# Container image size
+
+- Container image size will affect container start-up time
+  - May not be significant if container started e.g once per job
+  - Should be considered if container is started repeatedly e.g as part of a workflow or when task farming 
+- To minimize image size:
+  - Start with minimal base image
+  - Only install what you need
+  - Clean up after install
+    - Delete unnecessary source files etc
+    - Check if package maneger has clean-up funtions, e.g. `apt clean`, `conda clean` etc
+ 
+
+# Common problems 1
+
+Package manager assume root privileges 
+- Some packages try to make changes to directories shared with host
+  - E.g. services may try to add a user or a group 
+    - This fails because /etc/users or /etc/groups are read-only
+
+
+# Workarounds:
+
+  - Try skipping the problematic dependency
+    - Syntax depends on package manager, e.g:
+
+      ``` 
+      apt-mark hold openssh-client && apt install -y git
+      ```
+  
+  - Try installing the dependency from source
+  - Try to find base image with service already installed
+  - Replace `useradd` and `groupadd` with dummies 
+  
+    ```
+    cp /usr/bin/true /usr/sbin/useradd
+    cp /usr/bin/true /usr/sbin/groupadd
+    ```
+
+# Common problem 2
+
+Some packages assume interactive mode and fail when built from definition file
+
+Workarounds:
+  - Most package manaagers have `-y` option or similar
+  - Try using bash `yes` command
+    
+    ``` 
+    yes | <installation command>
+    ``` 
+  - Check OS specific options, e.g. for Ubuntu/Debian
+
+    ``` 
+    DEBIAN_FRONTEND=noninteractive apt install ...
+    ``` 

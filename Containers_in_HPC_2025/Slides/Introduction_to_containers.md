@@ -29,12 +29,11 @@ Unported License, [http://creativecommons.org/licenses/by-sa/4.0/](http://creati
 # Containers
 
 - Containers are a way of packaging software and their dependencies (libraries, etc.)
-- Popular container engines include Docker, Apptainer (open source fork of Singularity), Shifter, Podman
-- Docker probably the most popular overall, but not suitable for HPC environments
+- Popular container engines include Docker, Apptainer (open source fork of Singularity), Shifter
 - Singularity/Apptainer is most popular in HPC environments
 
 
-# Apptainer vs. Singularity
+# A note on Apptainer/Singularity
 - The open source project formerly called Singularity is now called Apptainer (since March 2022)
 - Sylabs continues to develop commercially oriented products such as SingularityCE and SingularityPro
 - Apptainer 1.0 was forked from Singularity 3.9.5 with some [changes](https://github.com/apptainer/apptainer/releases/tag/v1.0.0)
@@ -66,11 +65,12 @@ TLDR: Most older singularity instructions work currently as-is, but this may cha
 # Benefits of containers: Ease of installation
 
 - Containers are becoming a popular way of distributing software
-  - A single-command installation from existing image
+  - A single-command installation
   - More portable since all dependencies are included
-- Limited root privileges inside the container if the build system supports it
-  - Package managers (yum, apt, etc.) can be utilized even when not available on the target system
-  - Some containers need full root access in to build
+  - Normal user rights are enough when using an existing container
+- Root access on build system is enough
+  - Root access, package managers (yum, apt, etc.) can be utilized even when not available on the target system.
+  - Makes installing libraries easier
 
 
 # Benefits of containers: Environment isolation
@@ -126,7 +126,6 @@ TLDR: Most older singularity instructions work currently as-is, but this may cha
     - Conda environments can be installed inside containers
     - Container wrapper tool [Tykky](https://docs.csc.fi/computing/containers/tykky/) provided for this
 - Should be considered even when other methods exist
-
 
 # Just a random example (FASTX-toolkit)
 
