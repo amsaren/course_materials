@@ -19,7 +19,7 @@ Unported License, [http://creativecommons.org/licenses/by-sa/4.0/](http://creati
 
 # Apptainer on CSC supercomputers
 
-- Apptainer available in Puhti, Mahti, SingularityCE on LUMI
+- Apptainer available in Puhti and Mahti, SingularityCE on LUMI
 - Apptainer jobs are treated just as any other jobs
 - Users can run their own containers
   - No need to load a module. Apptainer in `$PATH` by default.
@@ -45,7 +45,10 @@ Unported License, [http://creativecommons.org/licenses/by-sa/4.0/](http://creati
   - The internal FS is read-only when executed with user-level rights
 - To access host directories, they need to be mapped to container directories
   - This can be done with the `--bind (-B)` option
-  - E.g., to map the host directory `/scratch/project_2001234` to the `/data` directory inside the container: `--bind /scratch/project_2001234:/data`
+  - E.g., to map the host directory `/scratch/project_2001234` to `/data` directory inside the container:
+    ```
+    --bind /scratch/project_2001234:/data
+    ```
   - The target directory inside the container does not need to exist, it is created if necessary
   - More than one directory can be mapped
 
@@ -64,9 +67,9 @@ Unported License, [http://creativecommons.org/licenses/by-sa/4.0/](http://creati
   --bind /scratch
   ```
    do the same
-- 
 
-# File sytem
+
+# File system
 
 - Multiple paths can be separated by comma or given as separate options:
   ```
@@ -77,10 +80,6 @@ Unported License, [http://creativecommons.org/licenses/by-sa/4.0/](http://creati
   --bind /projappl --bind /scratch
   ```
   do the same 
-- It is possible to bind file system images
-   ```
-  --bind /scratch/project/my_dataset.sqfs:/data:image-src=/
-  ```
 
 
 # File system
@@ -264,7 +263,7 @@ apptainer_wrapper exec myprog -i input -o output
 
 # Some recurring problems
 
-- Errors related to related `which`
+- Errors related to command `which`
   - Some container images use BusyBox instead of GNU coreutils
-  - Often `--cleanenv` will help, e.g. with error "unknown option --tty-only"
-  - Sometimes may be necessary to install GNU which
+  - Often `--cleanenv` will help
+    - e.g. error "unknown option --tty-only" caused by inheriting system alias settings from host
