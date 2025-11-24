@@ -373,7 +373,7 @@ From: ubuntu:20.04
 
 # Common problems 1
 
-Package manager assume root privileges 
+- Package managers typically assume root privileges 
 - Some packages try to make changes to directories shared with host
   - E.g. services may try to add a user or a group 
     - This fails because /etc/users or /etc/groups are read-only
@@ -381,8 +381,8 @@ Package manager assume root privileges
 
 # Workarounds:
 
-  - Try skipping the problematic dependency
-    - Syntax depends on package manager, e.g:
+- Try skipping the problematic dependency
+   - Syntax depends on package manager, e.g:
 
       ``` 
       apt-mark hold openssh-client && apt install -y git
@@ -397,12 +397,13 @@ Package manager assume root privileges
     cp /usr/bin/true /usr/sbin/groupadd
     ```
 
-# Common problem 2
 
-Some packages assume interactive mode and fail when built from definition file
+# Common problems 2
 
-Workarounds:
-  - Most package manaagers have `-y` option or similar
+- Some packages assume interactive mode and fail when built from definition file
+
+- Workarounds:
+  - Most package managers have `-y` option or similar
   - Try using bash `yes` command
     
     ``` 
@@ -413,3 +414,24 @@ Workarounds:
     ``` 
     DEBIAN_FRONTEND=noninteractive apt install ...
     ``` 
+
+# Common problems 3
+
+- Some software picky about locale
+  - perl proograms often problematic
+- Workarounds:
+  - Install necessary locales
+  - Set locale in `%environment`
+    ```
+    export LC_ALL=C
+    ```
+
+# Common problems 4
+
+- Some programs use command `which` to e.g. check if dependencies exist or to set paths
+  - Typically expect GNU `which`
+  - Some container base images come with e.g BusyBox multibinary instead
+  - Can sometimes cause problems
+- Workaround:
+  - Install GNU `which`
+- Sometimes similar problems with other GNU coreutils vs BusyBox
