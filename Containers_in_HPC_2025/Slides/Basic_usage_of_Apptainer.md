@@ -39,7 +39,7 @@ Unported License, [http://creativecommons.org/licenses/by-sa/4.0/](http://creati
   - `apptainer shell [shell options...] <container>`
 
 
-# File system 1
+# File system
 
 - Containers have their own internal file system (FS)
   - The internal FS is read-only when executed with user-level rights
@@ -50,26 +50,52 @@ Unported License, [http://creativecommons.org/licenses/by-sa/4.0/](http://creati
   - More than one directory can be mapped
 
 
-# File system 2
+# File system
 
 - Basic syntax: `/host/dir:/container/dir`
 - If path is same in host and container it can be specified only once
-  `--bind /scratch:/scratch` and `--bind /scratch` do the same
+  ```
+  --bind /scratch:/scratch
+  ```
+
+  and 
+  
+  ```
+  --bind /scratch
+  ```
+   do the same
+- 
+
+# File sytem
+
 - Multiple paths can be separated by comma or given as separate options:
-  `--bind /projapp,/scratch` and `--bind /projappl --bind /scratch` do the same 
+  ```
+  --bind /projapp,/scratch
+  ```
+  and 
+  ```
+  --bind /projappl --bind /scratch
+  ```
+  do the same 
 - It is possible to bind file system images
-  `--bind /scratch/project/my_dataset.sqfs:/data:image-src=/`
+   ```
+  --bind /scratch/project/my_dataset.sqfs:/data:image-src=/
+  ```
 
 
-# File system 3
+# File system
 
 - Current working directory (`$PWD`) bound by default
 - Some host system directories also bound
   - Can be controlled with `--no-mount` option
 - Also possible to set `$APPTAINER_BIND` environment variable
-  `export APPTAINER_BIND="/host/dir:/container/dir"`
+  
+  ```
+  export APPTAINER_BIND="/host/dir:/container/dir"
+  ```
 
-# `apptainer_wrapper` 1
+
+# `apptainer_wrapper`
 
 - Running containers with `apptainer_wrapper` takes care of the most common `--bind` commands automatically
   - Binds: /users, /projappl, /scratch, /appl/data
@@ -78,7 +104,7 @@ Unported License, [http://creativecommons.org/licenses/by-sa/4.0/](http://creati
 - For containers that need specific binding it's best to use `apptainer exec --bind`
 
 
-# `apptainer_wrapper`2
+# `apptainer_wrapper`
 - You need to set the `$SING_IMAGE` environment variable to point to the correct Apptainer image file
 
   ```bash
@@ -87,7 +113,7 @@ Unported License, [http://creativecommons.org/licenses/by-sa/4.0/](http://creati
   ```
 
 
-# `apptainer_wrapper` 3
+# `apptainer_wrapper`
 
 - Any other options can be set by setting `$SING_FLAGS`
   - Any additional `--bind` statements
@@ -192,7 +218,7 @@ export SING_FLAGS="--bind /scratch/project_12345/my_reference:/reference $SING_F
 apptainer_wrapper exec myprog -i input -o output
 ```
 
-# Some recurring problems 1
+# Some recurring problems
 
 - Conflicts with host system
   - Typical causes include `$PYTHONPATH` or `$PERL5LIB` set on host, etc.
@@ -201,7 +227,7 @@ apptainer_wrapper exec myprog -i input -o output
   - Adding option `--cleanenv` prevents host environment variables from being inherited
 
 
-# Some recurring problems 2
+# Some recurring problems
 
 - Locale related problems
   - Typically due to host default locale not being available in the container
@@ -214,7 +240,7 @@ apptainer_wrapper exec myprog -i input -o output
 - Should be solved when building the container, but not an easy option when using a ready container
 
 
-# Some recurring problems 3
+# Some recurring problems
 
 - Graphics/X11 related problems
   - Seems to happen mainly with Python
@@ -224,19 +250,19 @@ apptainer_wrapper exec myprog -i input -o output
     unset DISPLAY
     ```
 
-# Some recurring problems 4
+# Some recurring problems
 
 - Applications trying to write to container FS
   - Container FS read-only at runtime, so this will cause an error
   - See if there is command line option to set the directory the application wants to write to
   - Try binding the directory to a writable directory on host
 
-# Some recurring problems 5
+# Some recurring problems
 
 - Error message about not being able to mount `/tmp`
   - Usually solved by defining `$TMPDIR`
 
-# Some recurring problems 6
+# Some recurring problems
 
 - Errors related to related `which`
   - Some container images use BusyBox instead of GNU coreutils
