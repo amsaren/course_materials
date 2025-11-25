@@ -84,7 +84,7 @@ In short: Mahti is for large parallel jobs, prepare to install and optimize your
 - Will replace Puhti and Mahti in 2026 (ca. March- April)
 - 486 CPU nodes
   - 384 cores, 768 Gib or 1 536 GiB memory per node
--4 High-memory nodes
+- 4 High-memory nodes
   - 128 cores, 3072 GiB memory per node
 - 132 GPU nodes
   - 4 Nvidia GH200 Grace Hopper superchips each
